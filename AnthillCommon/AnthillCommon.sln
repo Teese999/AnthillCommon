@@ -15,15 +15,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Contracts", "..\Project.Contracts\Project.Contracts.csproj", "{EB762EAF-DFA3-4708-8BCD-B99DF550A2CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Data.Models", "..\Project.Data.Models\Project.Data.Models.csproj", "{E29BA7B9-B14A-4FFD-BB07-E19CE1C973A7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EB762EAF-DFA3-4708-8BCD-B99DF550A2CF} = {EB762EAF-DFA3-4708-8BCD-B99DF550A2CF}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{CB1349DB-AEEE-4D52-9E39-AB106E695707}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnthillCommon.Services", "..\AnthillCommon.Services\AnthillCommon.Services.csproj", "{F9F21BCB-6EF4-494A-AE18-D4540893174F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnthillCommon.Services", "..\AnthillCommon.Services\AnthillCommon.Services.csproj", "{F9F21BCB-6EF4-494A-AE18-D4540893174F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{68DFE877-36B2-4081-BF9A-87DA836C160E} = {68DFE877-36B2-4081-BF9A-87DA836C160E}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnthillCommon.Services.Contracts", "..\AnthillCommon.Services.Contracts\AnthillCommon.Services.Contracts.csproj", "{68DFE877-36B2-4081-BF9A-87DA836C160E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnthillCommon.Services.Contracts", "..\AnthillCommon.Services.Contracts\AnthillCommon.Services.Contracts.csproj", "{68DFE877-36B2-4081-BF9A-87DA836C160E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

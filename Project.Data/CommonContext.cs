@@ -21,7 +21,7 @@ namespace AnthillCommon.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserMap());
-            modelBuilder.ApplyConfiguration(new OrganizationMap());
+            modelBuilder.ApplyConfiguration(new OrganisationMap());
             modelBuilder.ApplyConfiguration(new OfficeMap());
             modelBuilder.ApplyConfiguration(new CityMap());
             

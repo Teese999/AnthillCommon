@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AnthillCommon.Models;
+using AnthillCommon.Services.Contracts.Models;
 
 namespace AnthillCommon.Services.Contracts.Mappers
 {
-    interface IUserMapper
+    public  interface IUserMapper : IMapper<User, UserDto>
     {
     }
 }

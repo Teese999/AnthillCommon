@@ -5,9 +5,9 @@ using System.Text;
 
 namespace AnthillCommon.Services.Contracts.Models
 {
-    public class OfficeDto : Office
+    public class OrganisationDto : Organisation
     {
-        public OfficeDto() : base()
+        public OrganisationDto() : base()
         {
         }
     }

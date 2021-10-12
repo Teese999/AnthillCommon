@@ -86,7 +86,7 @@ namespace AnthillCommon.Migrations
                     b.ToTable("Office");
                 });
 
-            modelBuilder.Entity("AnthillCommon.Models.Organization", b =>
+            modelBuilder.Entity("AnthillCommon.Models.Organisation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace AnthillCommon.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organization");
+                    b.ToTable("Organisation");
                 });
 
             modelBuilder.Entity("AnthillCommon.Models.User", b =>

@@ -3,7 +3,7 @@ using AnthillCommon.Services.Contracts.Models;
 
 namespace AnthillCommon.Services.Contracts.Mappers
 {
-    public interface ICityMapper : IMapper<City, CityDto>
+    public interface IOrganisationMapper : IMapper<Organisation, OrganisationDto>
     {
     }
 }
