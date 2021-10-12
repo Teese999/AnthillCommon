@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Repositories
 {
-    public class OrganizationRepository : AbstractRepository
+    public class OrganizationRepository : AbstractRepository<Organization>, IOrganizationRepository
     {
         public OrganizationRepository(CommonContext context) : base(context)
         {
         }
-
-        
     }
 }
 

@@ -1,4 +1,4 @@
-﻿using AnthillCommon.Contracts;
+﻿using AnthillCommon.Models;
 using AnthillCommon.DataContext;
 
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Repositories
 {
-    public abstract class AbstractRepository : IRepository, IEntityRepository<IEntity>
+    public abstract class AbstractRepository<TEntity> 
+        where TEntity : class, IEntity 
     {
         protected AbstractRepository(CommonContext context)
         {
@@ -19,73 +20,60 @@ namespace AnthillCommon.Repositories
         }
         protected CommonContext Context { get; private set; }
 
-        protected IQueryable<IEntity> GetQuery<IEntity>(Expression<Func<IEntity, bool>> criteria = null)
-            where IEntity : class
+        protected IQueryable<TEntity> GetQuery(Expression<Func<TEntity, bool>> criteria = null)
         {
-            IQueryable<IEntity> query = Context.Set<IEntity>();
+            IQueryable<TEntity> query = Context.Set<TEntity>();
 
             if (criteria != null)
             {
                 query = query.Where(criteria);
             }
-            
+
             return query;
         }
-       
-        
 
-        public async Task<IEnumerable<IEntity>> GetAll(IEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentException($"{typeof(IEntity)} - is Null");
-            };
-
-            return await Context.Set<IEntity>().ToArrayAsync();
-        }
-
-        public async Task<IEntity> GetByKey(int key)
+        public async Task<TEntity> GetByKey(int key)
         {
             if (key < 0)
             {
                 throw new ArgumentException($"Key {key} is missing");
             };
 
-            return await GetQuery<IEntity>(x => x.Id == key).FirstOrDefaultAsync();
+            return await GetQuery(x => x.Id == key).FirstOrDefaultAsync();
         }
 
-        public async Task Add(IEntity entity)
+        public async Task Add(TEntity entity)
         {
             if (entity == null)
             {
-                throw new ArgumentException($"{typeof(IEntity)} - is Null");
+                throw new ArgumentException($"{typeof(TEntity)} - is Null");
             };
-            await Context.Set<IEntity>().AddAsync(entity);        
+            await Context.Set<TEntity>().AddAsync(entity);
         }
 
-        public async Task Remove(IEntity entity)
+        public async Task Remove(TEntity entity)
         {
-            await Task.Run(() => Context.Set<IEntity>().Remove(entity)); 
+            await Task.Run(() => Context.Set<TEntity>().Remove(entity));
         }
 
-        public async Task Update(IEntity entityCurrent, IEntity entityFrom)            
+        public async Task Update(TEntity entityCurrent, TEntity entityFrom)
         {
-            await Task.Run(() => Context.Entry(entityCurrent).CurrentValues.SetValues(entityFrom));                    
+            await Task.Run(() => Context.Entry(entityCurrent).CurrentValues.SetValues(entityFrom));
         }
 
-        public Task<bool> IsAttached(IEntity entity)
+        public Task<bool> IsAttached(TEntity entity)
         {
-           return Task.FromResult(Context.Set<IEntity>().Local.Any(e => e == entity));
+            return Task.FromResult(Context.Set<TEntity>().Local.Any(e => e == entity));
         }
 
-        public Task<IEntity> GetSingle(Expression<Func<IEntity, bool>> criteria)
+        public Task<TEntity> GetSingle(Expression<Func<TEntity, bool>> criteria)
         {
-            return  GetQuery<IEntity>().SingleOrDefaultAsync(criteria);
+            return GetQuery().SingleOrDefaultAsync(criteria);
         }
 
-        public async Task<IEnumerable<IEntity>> GetMany(IEntity entity, Expression<Func<IEntity, bool>> criteria)
+        public async Task<IEnumerable<TEntity>> GetMany(TEntity entity, Expression<Func<TEntity, bool>> criteria)
         {
-            return await GetQuery<IEntity>(criteria).ToListAsync();
+            return await GetQuery(criteria).ToListAsync();
         }
 
     }
