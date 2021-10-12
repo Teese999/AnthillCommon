@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Contracts
 {
-    public interface IEntityRepository<IEntity> 
+    public interface IEntityRepository<IEntity>
     {
-        public Task<IEnumerable<IEntity>>  GetAll(IEntity entity);
         public Task<IEntity> GetByKey(int key);
         public Task Add(IEntity entity);
         public Task Remove(IEntity entity);
