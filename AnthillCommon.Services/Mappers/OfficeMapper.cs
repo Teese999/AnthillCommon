@@ -10,17 +10,18 @@ using IMapper = AutoMapper.IMapper;
 
 namespace AnthillCommon.Services.Mappers
 {
-    public class OfficeMapper : AbstractMapper<Office, OfficeDto>, IOfficeMapper
+    public class OfficeMapper : IOfficeMapper
     {
-        protected override IMapper Configure()
+        private MapperConfiguration configuration;
+        public Mapper Mapper;
+        public OfficeMapper()
         {
-            var config = new MapperConfiguration(cfg =>
+            configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Office, OfficeDto>();
-
             });
-
-            return config.CreateMapper();
+            configuration.AssertConfigurationIsValid();
+            Mapper = new Mapper(configuration);
         }
     }
 }

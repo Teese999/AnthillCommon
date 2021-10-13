@@ -1,6 +1,5 @@
 ﻿using AnthillCommon.Models;
 using AnthillCommon.DataContext;
-
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
-namespace AnthillCommon.Repositories
+namespace AnthillCommon.Common.Repositories
 {
     public abstract class AbstractRepository<TEntity> 
         where TEntity : class, IEntity 
@@ -40,12 +39,7 @@ namespace AnthillCommon.Repositories
             };
 
             return await GetQuery(x => x.Id == key).FirstOrDefaultAsync();
-        }
-        public async Task<IEnumerable<TEntity>> GetAll()
-        {
 
-            Context.Set<TEntity>().ToArray();
-            return await Context.Set<TEntity>().ToArrayAsync();
         }
 
         public async Task Add(TEntity entity)
@@ -76,9 +70,11 @@ namespace AnthillCommon.Repositories
         {
             return GetQuery().SingleOrDefaultAsync(criteria);
         }
-        public async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>> criteria)
+
+        public async Task<IEnumerable<TEntity>> GetMany(TEntity entity, Expression<Func<TEntity, bool>> criteria)
         {
             return await GetQuery(criteria).ToListAsync();
         }
+
     }
 }

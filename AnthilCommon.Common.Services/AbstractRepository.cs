@@ -8,8 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-
-namespace AnthillCommon.Repositories
+namespace AnthilCommon.Common.Services
 {
     public abstract class AbstractRepository<TEntity> 
         where TEntity : class, IEntity 
@@ -76,6 +75,7 @@ namespace AnthillCommon.Repositories
         {
             return GetQuery().SingleOrDefaultAsync(criteria);
         }
+
         public async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>> criteria)
         {
             return await GetQuery(criteria).ToListAsync();

@@ -6,21 +6,21 @@ using AnthillCommon.Services.Contracts.Mappers;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Mappers;
 using AutoMapper;
-using IMapper = AutoMapper.IMapper;
 
 namespace AnthillCommon.Services.Mappers
 {
-    public class CityMapper : AbstractMapper<City, CityDto>, ICityMapper
+    public class CityMapper : ICityMapper
     {
-        protected override IMapper Configure()
+        private MapperConfiguration configuration;
+        public Mapper Mapper;
+        public CityMapper()
         {
-            var config = new MapperConfiguration(cfg =>
+            configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<City, CityDto>();
-
+                cfg.CreateMap<CityMapper, CityMapper>();
             });
-
-            return config.CreateMapper();
+            configuration.AssertConfigurationIsValid();
+            Mapper = new Mapper(configuration);
         }
     }
 }

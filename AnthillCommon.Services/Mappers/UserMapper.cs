@@ -6,22 +6,25 @@ using AnthillCommon.Services.Contracts.Mappers;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Mappers;
 using AutoMapper;
-using IMapper = AutoMapper.IMapper;
+using AutoMapper.EntityFramework;
+using AutoMapper.EntityFrameworkCore;
+using AutoMapper.Collection;
+using AnthillCommon.Common.Contracts;
 
 namespace AnthillCommon.Services.Mappers
 {
-    public class UserMapper : AbstractMapper<User, UserDto>, IUserMapper
+    public class UserMapper : IUserMapper
     {
-
-        protected override IMapper Configure()
+        private MapperConfiguration configuration; 
+        public Mapper Mapper;
+        public UserMapper()
         {
-            var config = new MapperConfiguration(cfg =>
+            configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDto>();
-
             });
-
-            return config.CreateMapper();
+            configuration.AssertConfigurationIsValid();
+            Mapper = new Mapper(configuration);
         }
     }
 }

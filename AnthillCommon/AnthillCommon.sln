@@ -25,6 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnthillCommon.Services", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnthillCommon.Services.Contracts", "..\AnthillCommon.Services.Contracts\AnthillCommon.Services.Contracts.csproj", "{68DFE877-36B2-4081-BF9A-87DA836C160E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{2983FEA3-2999-4FDB-8B88-DA505C2F7E6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnthillCommon.Common.Data", "..\AnthillCommon.Common.Data\AnthillCommon.Common.Data.csproj", "{3644DD79-FC54-4C62-A74F-F4C259366615}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A} = {CE83C432-B29A-4C47-AB1B-28E12FAD393A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnthillCommon.Common.Contracts", "..\AnthillCommon.Common.Conntracts\AnthillCommon.Common.Contracts.csproj", "{CE83C432-B29A-4C47-AB1B-28E12FAD393A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnthilCommon.Common.Services", "..\AnthilCommon.Common.Services\AnthilCommon.Common.Services.csproj", "{AEC61467-81B3-4AB8-B92F-D41C766BD0FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +66,18 @@ Global
 		{68DFE877-36B2-4081-BF9A-87DA836C160E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68DFE877-36B2-4081-BF9A-87DA836C160E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68DFE877-36B2-4081-BF9A-87DA836C160E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3644DD79-FC54-4C62-A74F-F4C259366615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3644DD79-FC54-4C62-A74F-F4C259366615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3644DD79-FC54-4C62-A74F-F4C259366615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3644DD79-FC54-4C62-A74F-F4C259366615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC61467-81B3-4AB8-B92F-D41C766BD0FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC61467-81B3-4AB8-B92F-D41C766BD0FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC61467-81B3-4AB8-B92F-D41C766BD0FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC61467-81B3-4AB8-B92F-D41C766BD0FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +88,9 @@ Global
 		{E29BA7B9-B14A-4FFD-BB07-E19CE1C973A7} = {A76DF44F-48E3-462B-A1C2-AF36464EBEFB}
 		{F9F21BCB-6EF4-494A-AE18-D4540893174F} = {CB1349DB-AEEE-4D52-9E39-AB106E695707}
 		{68DFE877-36B2-4081-BF9A-87DA836C160E} = {CB1349DB-AEEE-4D52-9E39-AB106E695707}
+		{3644DD79-FC54-4C62-A74F-F4C259366615} = {2983FEA3-2999-4FDB-8B88-DA505C2F7E6B}
+		{CE83C432-B29A-4C47-AB1B-28E12FAD393A} = {2983FEA3-2999-4FDB-8B88-DA505C2F7E6B}
+		{AEC61467-81B3-4AB8-B92F-D41C766BD0FD} = {2983FEA3-2999-4FDB-8B88-DA505C2F7E6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CDA57B2-ABC8-4314-8B0E-24C4E841C2F6}
