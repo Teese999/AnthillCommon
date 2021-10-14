@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>AnthillCommon.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Unity" Version="5.11.10" />
+    <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
 
   <ItemGroup>
