@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace AnthillCommon
 {
@@ -56,6 +57,12 @@ namespace AnthillCommon
 
                    
             });
+        }
+
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            // Could be used to register more types
+            ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
         }
     }
 }
