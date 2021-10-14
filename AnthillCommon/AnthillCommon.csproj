@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnthillCommon.Services.Contracts\AnthillCommon.Services.Contracts.csproj" />
+    <ProjectReference Include="..\AnthillCommon.Services\AnthillCommon.Services.csproj" />
   </ItemGroup>
 
 
