@@ -15,16 +15,26 @@ namespace AnthillCommon.Services.Mappers
 {
     public class UserMapper : IUserMapper
     {
-        private MapperConfiguration configuration; 
-        public Mapper Mapper;
+        private MapperConfiguration configuration;
+        private MapperConfiguration configurationReverse;
+        public Mapper Mapper { get; set; }
+        public Mapper MapperReverse { get; set; }
         public UserMapper()
         {
             configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<UserDto, User>().ForMember(x => x.Id, y => y.Ignore()).ForMember(x => x.Office, y => y.Ignore());
             });
             configuration.AssertConfigurationIsValid();
             Mapper = new Mapper(configuration);
+
+            configurationReverse = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserDto, User>().ForMember(x => x.Office, y => y.Ignore());
+            });
+            configurationReverse.AssertConfigurationIsValid();
+            MapperReverse = new Mapper(configurationReverse);
         }
     }
 }

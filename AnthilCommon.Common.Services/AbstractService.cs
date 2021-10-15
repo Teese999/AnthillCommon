@@ -25,6 +25,8 @@ namespace AnthilCommon.Common.Services
         public AbstractService(IUnityContainer container)
         {
             Container = container;
+            MapperFactory = new MapperFactory(container);
+            CurrentMapper = MapperFactory.CreateMapper(typeof(TEntity), typeof(TEntityDto));
         }
 
         protected Mapper CurrentMapper { get; private set; }

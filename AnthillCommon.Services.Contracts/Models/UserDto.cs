@@ -18,7 +18,6 @@ namespace AnthillCommon.Services.Contracts.Models
         public DateTime UpdateTime { get; set; }
         public int OfficeId { get; set; }
         public Boolean IsFired { get; set; }
-        public virtual OfficeDto Office { get; set; }
 
     }
 }

@@ -23,6 +23,10 @@ namespace AnthillCommon.Controllers
         [Route("GetCity/{id}")]
         public async Task<IActionResult> GetCity(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest("Id must be none-negative");
+            }
             var city = await _cityService.GetCity(id);
             return Ok(city);
         }
@@ -30,6 +34,10 @@ namespace AnthillCommon.Controllers
         [Route("AddCity")]
         public async Task<IActionResult> AddCity([FromBody] CityModel city)
         {
+            if (city == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new CityModelMapper().Mapper;
             await _cityService.AddCity(mapper.Map<CityDto>(city));
             return Ok();
@@ -38,6 +46,10 @@ namespace AnthillCommon.Controllers
         [Route("DeleteCity")]
         public async Task<IActionResult> DeleteCity([FromBody] CityModel city)
         {
+            if (city == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new CityModelMapper().Mapper;
             await _cityService.DeleteCity(mapper.Map<CityDto>(city));
             return Ok();
@@ -46,6 +58,10 @@ namespace AnthillCommon.Controllers
         [Route("UpdateCity")]
         public async Task<IActionResult> UpdateCity([FromBody] CityModel city)
         {
+            if (city == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new CityModelMapper().Mapper;
             await _cityService.UpdateCity(mapper.Map<CityDto>(city));
             return Ok();

@@ -12,7 +12,7 @@ namespace AnthillCommon.Mappings
         {
             configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<City, CityDto>();
+                cfg.CreateMap<CityModel, CityDto>();
             });
             configuration.AssertConfigurationIsValid();
             Mapper = new Mapper(configuration);

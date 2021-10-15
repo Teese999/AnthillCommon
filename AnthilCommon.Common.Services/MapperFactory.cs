@@ -18,7 +18,7 @@ namespace AnthilCommon.Common.Services
         }
         private IUnityContainer Container { get; set; }
      
-        public Mapper CreateMapper(Type sourceType, Type destinationType)
+        public Mapper CreateMapper(Type sourceType, Type destinationType, bool reverse = false)
 
         {
             var configuration = new MapperConfiguration(cfg =>

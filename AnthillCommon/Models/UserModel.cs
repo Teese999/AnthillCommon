@@ -21,6 +21,5 @@ namespace AnthillCommon.Models
         public DateTime UpdateTime { get; set; }
         public int OfficeId { get; set; }
         public Boolean IsFired { get; set; }
-        public virtual OfficeModel Office { get; set; }
     }
 }

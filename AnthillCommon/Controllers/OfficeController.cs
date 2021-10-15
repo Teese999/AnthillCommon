@@ -23,6 +23,10 @@ namespace AnthillCommon.Controllers
         [Route("GetOffice/{id}")]
         public async Task<IActionResult> GetOffice(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest("Id must be none-negative");
+            }
             var Office = await _officeService.GetOffice(id);
             return Ok(Office);
         }
@@ -30,6 +34,10 @@ namespace AnthillCommon.Controllers
         [Route("AddOffice")]
         public async Task<IActionResult> AddOffice([FromBody] OfficeModel office)
         {
+            if (office == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OfficeModelMapper().Mapper;
             await _officeService.AddOffice(mapper.Map<OfficeDto>(office));
             return Ok();
@@ -38,6 +46,10 @@ namespace AnthillCommon.Controllers
         [Route("DeleteOffice")]
         public async Task<IActionResult> DeleteOffice([FromBody] OfficeModel office)
         {
+            if (office == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OfficeModelMapper().Mapper;
             await _officeService.DeleteOffice(mapper.Map<OfficeDto>(office));
             return Ok();
@@ -46,6 +58,10 @@ namespace AnthillCommon.Controllers
         [Route("UpdateOffice")]
         public async Task<IActionResult> UpdateOffice([FromBody] OfficeModel office)
         {
+            if (office == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OfficeModelMapper().Mapper;
             await _officeService.UpdateOffice(mapper.Map<OfficeDto>(office));
             return Ok();

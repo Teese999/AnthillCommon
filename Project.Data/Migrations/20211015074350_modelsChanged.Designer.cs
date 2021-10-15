@@ -4,14 +4,16 @@ using AnthillCommon.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AnthillCommon.Migrations
+namespace Project.Data.Migrations
 {
     [DbContext(typeof(CommonContext))]
-    partial class CommonContextModelSnapshot : ModelSnapshot
+    [Migration("20211015074350_modelsChanged")]
+    partial class modelsChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,9 +77,6 @@ namespace AnthillCommon.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("OrganisationId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateTime")
                         .HasMaxLength(19)
                         .HasColumnType("datetime2");
@@ -85,8 +84,6 @@ namespace AnthillCommon.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("OrganisationId");
 
                     b.ToTable("Office");
                 });
@@ -106,6 +103,9 @@ namespace AnthillCommon.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("OrganisationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateTime")
                         .HasMaxLength(19)
@@ -176,15 +176,7 @@ namespace AnthillCommon.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AnthillCommon.Models.Organisation", "Organisation")
-                        .WithMany()
-                        .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("City");
-
-                    b.Navigation("Organisation");
                 });
 
             modelBuilder.Entity("AnthillCommon.Models.User", b =>

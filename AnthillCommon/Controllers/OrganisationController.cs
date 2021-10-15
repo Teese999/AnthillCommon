@@ -23,6 +23,10 @@ namespace AnthillCommon.Controllers
         [Route("GetOrganisation/{id}")]
         public async Task<IActionResult> GetOrganisation(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest("Id must be none-negative");
+            }
             var Organisation = await _organisationService.GetOrganisation(id);
             return Ok(Organisation);
         }
@@ -30,6 +34,10 @@ namespace AnthillCommon.Controllers
         [Route("AddOrganisation")]
         public async Task<IActionResult> AddOrganisation([FromBody] OrganisationModel organisation)
         {
+            if (organisation == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OrganisationModelMapper().Mapper;
             await _organisationService.AddOrganisation(mapper.Map<OrganisationDto>(organisation));
             return Ok();
@@ -38,6 +46,10 @@ namespace AnthillCommon.Controllers
         [Route("DeleteOrganisation")]
         public async Task<IActionResult> DeleteOrganisation([FromBody] OrganisationModel organisation)
         {
+            if (organisation == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OrganisationModelMapper().Mapper;
             await _organisationService.DeleteOrganisation(mapper.Map<OrganisationDto>(organisation));
             return Ok();
@@ -46,6 +58,10 @@ namespace AnthillCommon.Controllers
         [Route("UpdateOrganisation")]
         public async Task<IActionResult> UpdateOrganisation([FromBody] OrganisationModel organisation)
         {
+            if (organisation == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new OrganisationModelMapper().Mapper;
             await _organisationService.UpdateOrganisation(mapper.Map<OrganisationDto>(organisation));
             return Ok();

@@ -13,6 +13,7 @@ namespace AnthillCommon.Mappings
             configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserModel, UserDto>();
+                
             });
             configuration.AssertConfigurationIsValid();
             Mapper = new Mapper(configuration);

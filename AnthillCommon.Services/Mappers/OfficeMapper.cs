@@ -13,15 +13,26 @@ namespace AnthillCommon.Services.Mappers
     public class OfficeMapper : IOfficeMapper
     {
         private MapperConfiguration configuration;
-        public Mapper Mapper;
+        private MapperConfiguration configurationReverse;
+        public Mapper Mapper { get; set; }
+        public Mapper MapperReverse { get; set; }
         public OfficeMapper()
         {
             configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Office, OfficeDto>();
+                cfg.CreateMap<OfficeDto, Office>().ForMember(x => x.Id, y => y.Ignore());
             });
             configuration.AssertConfigurationIsValid();
             Mapper = new Mapper(configuration);
+
+            configurationReverse = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<OfficeDto, Office>();
+            });
+            configurationReverse.AssertConfigurationIsValid();
+            MapperReverse = new Mapper(configurationReverse);
         }
+
     }
 }

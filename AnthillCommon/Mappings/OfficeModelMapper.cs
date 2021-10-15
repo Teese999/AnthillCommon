@@ -12,7 +12,7 @@ namespace AnthillCommon.Mappings
         {
             configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Office, OfficeDto>();
+                cfg.CreateMap<OfficeModel, OfficeDto>();
             });
             configuration.AssertConfigurationIsValid();
             Mapper = new Mapper(configuration);

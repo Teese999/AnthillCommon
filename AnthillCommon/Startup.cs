@@ -1,3 +1,6 @@
+using AnthillCommon.DataContext;
+using AnthillCommon.Models;
+using AnthillCommon.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +28,7 @@ namespace AnthillCommon
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
                 .AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true)
@@ -34,6 +37,8 @@ namespace AnthillCommon
 
             services.AddHttpContextAccessor();
             services.AddControllers();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +68,52 @@ namespace AnthillCommon
         {
             // Could be used to register more types
             ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
+        }
+        private async void commonDbCreaTE()
+        {
+            var cont = new CommonContext();
+            var qq = new OrganisationRepository(cont);
+            var z = new CityRepository(cont);
+            var a = new OfficeRepository(cont);
+            var u = new UserRepository(cont);
+            var i = 0;
+            foreach (var item in a.GetAll().Result)
+            {
+
+                await u.Add(new User()
+                {
+                    FirstName = $"FirstName_{i}",
+                    LastName = $"LastName_{i}",
+                    Email = $"Mail_{i}",
+                    BirthDate = DateTime.Today,
+                    Gender = $"RandomGender_{i}",
+                    CreateDate = DateTime.Now,
+                    UpdateTime = DateTime.Now,
+                    IsFired = false,
+                    Office = item
+                });
+                i++;
+            }
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    await z.Add(new City()
+            //    {
+            //        Name = $"City_{i}",
+            //        State = $"State_{i}",
+            //        Country = $"Country_{i}",
+            //        CreateDate = DateTime.Now,
+            //        UpdateTime = DateTime.Now
+            //    });
+            //}
+            //Id = i,
+            //        FirstName = $"FirstName_{i}",
+            //        LastName = $"LastName_{i}",
+            //        Email = $"Mail_{i}",
+            //        BirthDate = DateTime.Today,
+            //        Gender = $"RandomGender_{i}",
+            //        CreateDate = DateTime.Now,
+            //        UpdateTime = DateTime.Now,
+            //        IsFired = false,
         }
     }
 }

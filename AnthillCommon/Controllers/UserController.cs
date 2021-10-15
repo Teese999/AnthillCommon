@@ -23,6 +23,11 @@ namespace AnthillCommon.Controllers
         [Route("GetUser/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest("Id must be none-negative");
+            }
+
             var user = await _userService.GetUser(id);
             return Ok(user);
         }
@@ -30,6 +35,10 @@ namespace AnthillCommon.Controllers
         [Route("AddUser")]
         public async Task<IActionResult> AddUser([FromBody] UserModel user)
         {
+            if (user == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new UserModelMapper().Mapper;
             await _userService.AddUser(mapper.Map<UserDto>(user));
             return Ok();
@@ -38,7 +47,12 @@ namespace AnthillCommon.Controllers
         [Route("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UserModel user)
         {
+            if (user == null)
+            {
+                return BadRequest("object is null");
+            }
             var mapper = new UserModelMapper().Mapper;
+            //var us = mapper.Map<UserDto>(user);
             await _userService.DeleteUser(mapper.Map<UserDto>(user));
             return Ok();
         }
@@ -46,6 +60,10 @@ namespace AnthillCommon.Controllers
         [Route("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserModel user)
         {
+            if (user == null)
+            {
+                return BadRequest();
+            }
             var mapper = new UserModelMapper().Mapper;
             await _userService.UpdateUser(mapper.Map<UserDto>(user));
             return Ok();

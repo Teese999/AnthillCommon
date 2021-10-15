@@ -14,6 +14,6 @@ namespace AnthillCommon.Services.Contracts.Models
         public DateTime CreateDate { get; set; }
         public DateTime UpdateTime { get; set; }
         public int CityId { get; set; }
-        public virtual CityDto City { get; set; }
+        public int OrganisationId { get; set; }
     }
 }
