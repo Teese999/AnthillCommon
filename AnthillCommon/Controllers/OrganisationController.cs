@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace AnthillCommon.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrganisationController : Controller
     {
         private readonly IOrganisationService _organisationService;

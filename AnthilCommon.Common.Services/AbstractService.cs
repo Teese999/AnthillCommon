@@ -15,26 +15,19 @@ namespace AnthilCommon.Common.Services
         where TEntityDto : class
 
     {
-        public AbstractService(IUnityContainer container, IDataContextManager dataContextManager)
-        {
-            MapperFactory = new MapperFactory(container);
-            Container = container;
-            DataContextManager = dataContextManager;
-            CurrentMapper = MapperFactory.CreateMapper(typeof(TEntity), typeof(TEntityDto));
-        }
         public AbstractService(IUnityContainer container)
         {
-            Container = container;
             MapperFactory = new MapperFactory(container);
+            Container = container;
             CurrentMapper = MapperFactory.CreateMapper(typeof(TEntity), typeof(TEntityDto));
         }
+
 
         protected Mapper CurrentMapper { get; private set; }
         protected MapperFactory MapperFactory { get; private set; }
 
         protected IUnityContainer Container { get; private set; }
 
-        protected IDataContextManager DataContextManager { get; private set; }
 
     }
 

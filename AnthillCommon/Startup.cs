@@ -1,6 +1,8 @@
 using AnthillCommon.DataContext;
 using AnthillCommon.Models;
 using AnthillCommon.Repositories;
+using AnthillCommon.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,9 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Identity.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
@@ -38,7 +43,35 @@ namespace AnthillCommon
             services.AddHttpContextAccessor();
             services.AddControllers();
 
-            
+            ///JWT
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                    .AddJwtBearer(options =>
+                    {
+                        var settingsSection = Configuration.GetSection("Settings");
+                        services.Configure<Settings>(settingsSection);
+                        var settings = settingsSection.Get<Settings>();
+
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.KEY)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                           
+                            ClockSkew = TimeSpan.Zero
+                        };
+                    });
+            services.AddControllersWithViews();
+
+            services.AddAuthorization();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,13 +87,14 @@ namespace AnthillCommon
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
 
-                   
+
             });
         }
 

@@ -25,6 +25,7 @@ namespace Project.Data
             container.RegisterType<IUserRepository, UserRepository>(new TLifetime());
             container.RegisterType<IOfficeRepository, OfficeRepository>(new TLifetime());
             container.RegisterType<IOrganisationRepository, OrganisationRepository>(new TLifetime());
+            container.RegisterType<IAccountRepository, AccountRepository>(new TLifetime());
 
         }
     }

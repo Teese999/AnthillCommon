@@ -6,17 +6,22 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Unity;
 
 namespace AnthillCommon.DataContext
 {
     public class CommonContext : DbContext
     {
+        protected IUnityContainer Container { get; private set; }
 
+        public CommonContext(IUnityContainer container) : base()
+        {
+            Container = container;
+        }
         public CommonContext() : base()
         {
+           
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +29,7 @@ namespace AnthillCommon.DataContext
             modelBuilder.ApplyConfiguration(new OrganisationMap());
             modelBuilder.ApplyConfiguration(new OfficeMap());
             modelBuilder.ApplyConfiguration(new CityMap());
-            
+            modelBuilder.ApplyConfiguration(new AccountMap());
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

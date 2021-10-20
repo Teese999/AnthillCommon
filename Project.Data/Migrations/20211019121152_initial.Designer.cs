@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(CommonContext))]
-    [Migration("20211015080648_modelsChanged2")]
-    partial class modelsChanged2
+    [Migration("20211019121152_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,10 +85,6 @@ namespace Project.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("OrganisationId");
 
                     b.ToTable("Office");
                 });
@@ -170,23 +166,39 @@ namespace Project.Data.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("AnthillCommon.Models.Office", b =>
+            modelBuilder.Entity("Project.Data.Models.Account", b =>
                 {
-                    b.HasOne("AnthillCommon.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("AnthillCommon.Models.Organisation", "Organisation")
-                        .WithMany()
-                        .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<DateTime>("CreateDate")
+                        .HasMaxLength(19)
+                        .HasColumnType("datetime2");
 
-                    b.Navigation("City");
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Navigation("Organisation");
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasMaxLength(19)
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("AnthillCommon.Models.User", b =>

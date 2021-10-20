@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AnthillCommon.Services;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace AnthillCommon
            where TLifetime : ITypeLifetimeManager, new()
         {
             Services.ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, configuration);
+
+            var settingsSection = configuration.GetSection("Settings");
+            container.RegisterInstance(settingsSection.Get<Settings>());
         }
     }
 }
