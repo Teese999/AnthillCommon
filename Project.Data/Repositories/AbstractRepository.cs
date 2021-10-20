@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 
 namespace AnthillCommon.Repositories
 {
@@ -23,7 +23,7 @@ namespace AnthillCommon.Repositories
         protected IQueryable<TEntity> GetQuery(Expression<Func<TEntity, bool>> criteria = null)
         {
             IQueryable<TEntity> query = Context.Set<TEntity>();
-
+            query.Load();
             if (criteria != null)
             {
                 query = query.Where(criteria);
@@ -37,9 +37,16 @@ namespace AnthillCommon.Repositories
             if (key < 0)
             {
                 throw new ArgumentException($"Key {key} is missing");
+                
             };
-
+            IQueryable<TEntity> query = Context.Set<TEntity>();
             return await GetQuery(x => x.Id == key).FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<TEntity>> GetAll()
+        {
+
+            Context.Set<TEntity>().ToArray();
+            return await Context.Set<TEntity>().ToArrayAsync();
         }
 
         public async Task Add(TEntity entity)
@@ -49,16 +56,20 @@ namespace AnthillCommon.Repositories
                 throw new ArgumentException($"{typeof(TEntity)} - is Null");
             };
             await Context.Set<TEntity>().AddAsync(entity);
+            await Context.SaveChangesAsync();
         }
 
         public async Task Remove(TEntity entity)
         {
-            await Task.Run(() => Context.Set<TEntity>().Remove(entity));
+            var qq = entity;
+            Context.Set<TEntity>().Remove(entity);
+            await Context.SaveChangesAsync();
         }
 
         public async Task Update(TEntity entityCurrent, TEntity entityFrom)
         {
             await Task.Run(() => Context.Entry(entityCurrent).CurrentValues.SetValues(entityFrom));
+            await Context.SaveChangesAsync();
         }
 
         public Task<bool> IsAttached(TEntity entity)
@@ -70,11 +81,9 @@ namespace AnthillCommon.Repositories
         {
             return GetQuery().SingleOrDefaultAsync(criteria);
         }
-
-        public async Task<IEnumerable<TEntity>> GetMany(TEntity entity, Expression<Func<TEntity, bool>> criteria)
+        public async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>> criteria)
         {
             return await GetQuery(criteria).ToListAsync();
         }
-
     }
 }

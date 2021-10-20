@@ -18,8 +18,8 @@ namespace AnthillCommon.Mapping
             builder.Property(x => x.Address).HasMaxLength(255).IsRequired();
             builder.Property(x => x.CreateDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();
             builder.Property(x => x.UpdateTime).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();
-            builder.HasOne(x => x.City).WithMany().HasForeignKey(x => x.CityId).IsRequired();
-
+            builder.Property(x => x.CityId).IsRequired();
+            builder.Property(x => x.OrganisationId).IsRequired();
         }
     }
 }

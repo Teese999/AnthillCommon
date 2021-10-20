@@ -4,4 +4,17 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Collection.EntityFramework" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnthilCommon.Common.Services\AnthilCommon.Common.Services.csproj" />
+    <ProjectReference Include="..\AnthillCommon.Services.Contracts\AnthillCommon.Services.Contracts.csproj" />
+    <ProjectReference Include="..\Project.Data.Models\Project.Data.Models.csproj" />
+    <ProjectReference Include="..\Project.Data\Project.Data.csproj" />
+  </ItemGroup>
+
 </Project>

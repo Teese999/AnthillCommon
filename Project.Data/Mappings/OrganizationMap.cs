@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Mapping
 {
-    public class OrganizationMap : IEntityTypeConfiguration<Organization>
+    public class OrganisationMap : IEntityTypeConfiguration<Organisation>
     {
-        public void Configure(EntityTypeBuilder<Organization> builder)
+        public void Configure(EntityTypeBuilder<Organisation> builder)
         {
-            builder.ToTable("Organization");
+            builder.ToTable("Organisation");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
             builder.Property(x => x.CreateDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();

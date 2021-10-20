@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnthillCommon.Common.Conntracts\AnthillCommon.Common.Contracts.csproj" />
+    <ProjectReference Include="..\Project.Contracts\Project.Contracts.csproj" />
+    <ProjectReference Include="..\Project.Data.Models\Project.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>

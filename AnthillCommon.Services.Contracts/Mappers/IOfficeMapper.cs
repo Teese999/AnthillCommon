@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AnthillCommon.Common.Contracts;
+using AnthillCommon.Models;
+using AnthillCommon.Services.Contracts.Models;
 
 namespace AnthillCommon.Services.Contracts.Mappers
 {
-    interface IOfficeMapper
+    public interface IOfficeMapper : IMapper<Office, OfficeDto>
     {
     }
 }
