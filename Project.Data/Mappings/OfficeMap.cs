@@ -20,6 +20,9 @@ namespace AnthillCommon.Mapping
             builder.Property(x => x.UpdateTime).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();
             builder.Property(x => x.CityId).IsRequired();
             builder.Property(x => x.OrganisationId).IsRequired();
+            //osipenkom: нет связи между таблицей Office и City
+            //osipenkom: нет связи между таблицей Office и Organization
+            //osipenkom: со стороны БД эти таблицы остались никак не связаны друг с другом, что может повлечь повреждение целостности данных
         }
     }
 }

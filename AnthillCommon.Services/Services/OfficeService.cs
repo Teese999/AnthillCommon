@@ -15,6 +15,7 @@ namespace AnthillCommon.Services.Services
 {
     public class OfficeService : AbstractService<Office, OfficeDto>, IOfficeService
     {
+        //osipenkom: все те же комментарии, что и в CityService
         public OfficeService(IUnityContainer container)
             : base(container) 
         {

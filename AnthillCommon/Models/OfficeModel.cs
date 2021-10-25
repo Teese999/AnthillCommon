@@ -7,6 +7,7 @@ namespace AnthillCommon.Models
 {
     public class OfficeModel
     {
+        //osipenkom: зачем тут конструктор без параметров, который нигде не импользуется?
         public OfficeModel()
         {
         }

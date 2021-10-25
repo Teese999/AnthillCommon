@@ -35,6 +35,7 @@ namespace AnthillCommon.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
+                //osipenkom: здесь не должно быть хардкода, эта строка должна приходить из конфига
                 optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Администратор\Documents\AnthillCommonBd.mdf;Integrated Security=True;Connect Timeout=30");
             }
         }

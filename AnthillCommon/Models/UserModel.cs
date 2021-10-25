@@ -7,6 +7,7 @@ namespace AnthillCommon.Models
 {
     public class UserModel
     {
+        //osipenkom: зачем тут конструктор без параметров, который нигде не импользуется?
         public UserModel()
         {
         }

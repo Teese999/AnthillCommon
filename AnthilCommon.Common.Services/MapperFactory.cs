@@ -9,6 +9,7 @@ using System.Text;
 using Unity;
 namespace AnthilCommon.Common.Services
 {
+    //osipenkom: эта фабрика нигде не используется. зачем она тогда нужна?
     public class MapperFactory
     {
         public MapperFactory(IUnityContainer container)

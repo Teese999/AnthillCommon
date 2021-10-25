@@ -6,6 +6,7 @@ using System.Text;
 
 namespace AnthillCommon.Services.Contracts.Models
 {
+    //osipenkom: зачем тут используется интерфейс IEntityDto, в чем суть?
     public class CityDto : IEntityDto
     {
         public int Id { get; set; }

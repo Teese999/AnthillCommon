@@ -22,6 +22,7 @@ namespace AnthillCommon.Services.Services
     {
         private readonly Settings _settings;
         private readonly IPasswordHasher _passwordHasher;
+        //osipenkom: по конвенции приватные поля именуются как _blabla
         private readonly IUnityContainer _Container;
         private readonly CommonContext _Context = new CommonContext();
         private AccountRepository _Repo;
@@ -40,6 +41,7 @@ namespace AnthillCommon.Services.Services
 
             if (acc == null || !_passwordHasher.Check(acc.Password, password).Verified)
             {
+                //osipenkom: лишние символы. за этим тоже старайся следить
                 return new AccessTokenResult { error_message = "Invalid grant" }; ;
             }
 
@@ -57,6 +59,7 @@ namespace AnthillCommon.Services.Services
                 };
             }
 
+            //osipenkom: неправильно название переменной. по конвенции должно быть blabla
             var Account = new Account(login, nickName, _passwordHasher.Hash(password));
 
             //Add acc

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Controllers
 {
+    //osipenkom: почитай best practices от Microsoft https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -21,6 +22,7 @@ namespace AnthillCommon.Controllers
         {
             _cityService = cityService;
         }
+        //osipenkom: "GetCity" здесь лишнее. HTTP метод GET в контроллере city сам по себе говорит о том, что при вызове произойдёт GetCity
         [HttpGet]
         [Route("GetCity/{id}")]
         public async Task<IActionResult> GetCity(int id)
@@ -32,6 +34,7 @@ namespace AnthillCommon.Controllers
             var city = await _cityService.GetCity(id);
             return Ok(city);
         }
+        //osipenkom: "AddCity" здесь лишнее. Смотри описание выше.
         [HttpPost]
         [Route("AddCity")]
         public async Task<IActionResult> AddCity([FromBody] CityModel city)
@@ -44,6 +47,7 @@ namespace AnthillCommon.Controllers
             await _cityService.AddCity(mapper.Map<CityDto>(city));
             return Ok();
         }
+        //osipenkom: "DeleteCity" здесь лишнее. Смотри описание выше.
         [HttpDelete]
         [Route("DeleteCity")]
         public async Task<IActionResult> DeleteCity([FromBody] CityModel city)
@@ -56,6 +60,7 @@ namespace AnthillCommon.Controllers
             await _cityService.DeleteCity(mapper.Map<CityDto>(city));
             return Ok();
         }
+        //osipenkom: "UpdateCity" здесь лишнее. Смотри описание выше.
         [HttpPut]
         [Route("UpdateCity")]
         public async Task<IActionResult> UpdateCity([FromBody] CityModel city)

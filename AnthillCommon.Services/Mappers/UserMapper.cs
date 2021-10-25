@@ -13,6 +13,7 @@ using AnthillCommon.Common.Contracts;
 
 namespace AnthillCommon.Services.Mappers
 {
+    //osipenkom: те же комментарии, что и для CityMapper
     public class UserMapper : IUserMapper
     {
         private MapperConfiguration configuration;

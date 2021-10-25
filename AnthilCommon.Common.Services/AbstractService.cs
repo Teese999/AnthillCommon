@@ -15,11 +15,12 @@ namespace AnthilCommon.Common.Services
         where TEntityDto : class
 
     {
-        public AbstractService(IUnityContainer container)
+        public AbstractService(IUnityContainer container, IMapper autoMapper = null)
         {
             MapperFactory = new MapperFactory(container);
             Container = container;
             CurrentMapper = MapperFactory.CreateMapper(typeof(TEntity), typeof(TEntityDto));
+            AutoMapper = autoMapper;
         }
 
 
@@ -27,8 +28,6 @@ namespace AnthilCommon.Common.Services
         protected MapperFactory MapperFactory { get; private set; }
 
         protected IUnityContainer Container { get; private set; }
-
-
+        protected readonly IMapper AutoMapper;
     }
-
 }

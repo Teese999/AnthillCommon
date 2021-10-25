@@ -14,6 +14,7 @@ namespace AnthillCommon.Services.Services
 {
     public class UserService : AbstractService<User, UserDto>, IUserService
     {
+        //osipenkom: все те же комментарии, что и в CityService
         public UserService(IUnityContainer container)
            : base(container) 
         {

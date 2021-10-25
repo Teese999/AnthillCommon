@@ -15,6 +15,8 @@ namespace AnthillCommon.Services.Services
 {
     class OrganisationService : AbstractService<Organisation, OrganisationDto>, IOrganisationService
     {
+        //osipenkom: все те же комментарии, что и в CityService
+        //osipenkom: опечатка в слове Organization, нужно проверить по всему коду
         public OrganisationService(IUnityContainer container)
            : base(container) 
         {

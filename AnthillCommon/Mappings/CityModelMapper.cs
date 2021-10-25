@@ -4,6 +4,7 @@ using AutoMapper;
 
 namespace AnthillCommon.Mappings
 {
+    //osipenkom: у маппера пропал интерфейс
     public class CityModelMapper
     {
         private MapperConfiguration configuration;

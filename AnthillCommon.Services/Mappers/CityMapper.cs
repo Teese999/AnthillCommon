@@ -11,8 +11,10 @@ namespace AnthillCommon.Services.Mappers
 {
     public class CityMapper : ICityMapper
     {
+        //osipenkom: неправильный нейминг, по конвенции _blabla
         private MapperConfiguration configuration;
         private MapperConfiguration configurationReverse;
+        //osipenkom: два маппера с двумя конфигурациями здесь не нужны. всё конфигурируется один раз
         public Mapper Mapper { get; set; }
         public Mapper MapperReverse { get; set; }
         public CityMapper()

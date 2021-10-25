@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Contracts
 {
+    //osipenkom: неиспользуемый интерфейс
     public interface IRepository
     {
     }

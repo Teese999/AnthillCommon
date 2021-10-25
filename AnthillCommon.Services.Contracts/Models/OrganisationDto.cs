@@ -6,6 +6,7 @@ using System.Text;
 
 namespace AnthillCommon.Services.Contracts.Models
 {
+    //osipenkom: те же комментарии, что и для CityDto
     public class OrganisationDto : IEntityDto
     {
         public int Id { get; set; }

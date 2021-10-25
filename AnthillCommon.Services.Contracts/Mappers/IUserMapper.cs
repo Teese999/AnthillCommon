@@ -5,7 +5,8 @@ using AutoMapper.Configuration;
 
 namespace AnthillCommon.Services.Contracts.Mappers
 {
-    public  interface IUserMapper : IMapper<User, UserDto>
+    //osipenkom: те же комментарии, что и для ICityMapper
+    public interface IUserMapper : IMapper<User, UserDto>
     {
     }
 }

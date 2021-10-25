@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Services.Contracts.Services
 {
+    //osipenkom: те же комментарии, что и для ICityService
     public interface IOrganisationService
     {
         Task<OrganisationDto> GetOrganisation(int id);

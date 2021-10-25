@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
+using AnthillCommon.Services.Mappers;
 
 namespace AnthillCommon
 {
@@ -33,6 +34,7 @@ namespace AnthillCommon
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        //osipenkom: async метод без асинхронного вызова внутри не имеет смысла.
         public async void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
@@ -71,7 +73,8 @@ namespace AnthillCommon
 
             services.AddAuthorization();
 
-
+            //osipenkom: все автомапперы можно зарегестрировать в DI здесь таким образом. тогда не нужна будет ни фабрика, ни интерфейс автомаппера - всё очень упрощается.
+            services.AddAutoMapper(typeof(CityMapperProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,6 +106,8 @@ namespace AnthillCommon
             // Could be used to register more types
             ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
         }
+
+        //osipenkom: неиспользуемый метод. по конвенции назван неправильно. названия переменных внутри неправильные.
         private async void commonDbCreaTE()
         {
             var cont = new CommonContext();

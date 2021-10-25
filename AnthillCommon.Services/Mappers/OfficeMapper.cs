@@ -12,6 +12,7 @@ namespace AnthillCommon.Services.Mappers
 {
     public class OfficeMapper : IOfficeMapper
     {
+        //osipenkom: те же комментарии, что и для CityMapper
         private MapperConfiguration configuration;
         private MapperConfiguration configurationReverse;
         public Mapper Mapper { get; set; }

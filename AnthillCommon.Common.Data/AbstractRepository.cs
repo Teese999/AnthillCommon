@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Common.Repositories
 {
+    //osipenkom: избыточный код: такой же класс есть в AnthillCommon.Common.Services. нужно оставить этот, а второй удалить.
     public abstract class AbstractRepository<TEntity> 
         where TEntity : class, IEntity 
     {

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Controllers
 {
+    //osipenkom: те же комментарии, что и для CityController
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
