@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Services.Contracts.Services
 {
-    //osipenkom: те же комментарии, что и для ICityService
     public interface IOfficeService
     {
-        Task<OfficeDto> GetOffice(int id);
-        Task AddOffice(OfficeDto office);
-        Task UpdateOffice(OfficeDto office);
-        Task DeleteOffice(OfficeDto office);
+        Task<OfficeDto> Get(int id);
+        Task Add(OfficeDto office);
+        Task Update(OfficeDto office);
+        Task Delete(int id);
     }
 }

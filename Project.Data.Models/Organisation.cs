@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AnthillCommon.Models
 {
     
-    public class Organisation : IEntity
+    public class Organization : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

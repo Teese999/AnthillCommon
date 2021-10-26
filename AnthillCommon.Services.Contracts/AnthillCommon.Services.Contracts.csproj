@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnthillCommon.Common.Conntracts\AnthillCommon.Common.Contracts.csproj" />
     <ProjectReference Include="..\Project.Contracts\Project.Contracts.csproj" />
     <ProjectReference Include="..\Project.Data.Models\Project.Data.Models.csproj" />
   </ItemGroup>

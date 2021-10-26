@@ -1,5 +1,4 @@
 ﻿using AnthillCommon.Services.Contracts;
-using AnthillCommon.Services.Contracts.Mappers;
 using AnthillCommon.Services.Contracts.Services;
 using AnthillCommon.Services.Mappers;
 using AnthillCommon.Services.Services;
@@ -22,15 +21,12 @@ namespace AnthillCommon.Services
             container.RegisterType<IUserService, UserService>(new TLifetime());
             container.RegisterType<IOfficeService, OfficeService>(new TLifetime());
             container.RegisterType<ICityService, CityService>(new TLifetime());
-            container.RegisterType<IOrganisationService, OrganisationService>(new TLifetime());
+            container.RegisterType<IOrganizationService, OrganizationService>(new TLifetime());
             container.RegisterType<IAuthService, AuthService>(new TLifetime());
-
+             
             container.RegisterType<IPasswordHasher, PasswordHasher>();
 
-            container.RegisterType<IUserMapper, UserMapper>(new TLifetime());
-            container.RegisterType<IOfficeMapper, OfficeMapper>(new TLifetime());
-            container.RegisterType<ICityMapper, CityMapper>(new TLifetime());
-            container.RegisterType<IOrganisationMapper, OrganisationMapper>(new TLifetime());
+
         }
     }
 }

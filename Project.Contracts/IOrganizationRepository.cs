@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Contracts
 {
-    public interface IOrganisationRepository : IEntityRepository<Organisation>
+    public interface IOrganizationRepository : IEntityRepository<Organization>
     {
 
     }

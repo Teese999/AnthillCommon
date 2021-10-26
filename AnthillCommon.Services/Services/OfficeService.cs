@@ -13,44 +13,37 @@ using Unity;
 
 namespace AnthillCommon.Services.Services
 {
-    public class OfficeService : AbstractService<Office, OfficeDto>, IOfficeService
+    public class OfficeService : AbstractService, IOfficeService
     {
-        //osipenkom: все те же комментарии, что и в CityService
-        public OfficeService(IUnityContainer container)
-            : base(container) 
-        {
-            Mapper = OfficeMapper.Mapper;
-            MapperReverse = OfficeMapper.MapperReverse;
-        }
-        private readonly OfficeMapper OfficeMapper = new OfficeMapper();
-        private readonly Mapper Mapper;
-        private readonly Mapper MapperReverse;
-        private readonly OfficeRepository Repo = new OfficeRepository(new CommonContext());
 
-        public async Task AddOffice(OfficeDto office)
+        private readonly OfficeRepository _repo = new OfficeRepository(new CommonContext());
+
+        public OfficeService(IUnityContainer container, IMapper autoMapper) : base(container, autoMapper) { }
+
+        public async Task Add(OfficeDto office)
         {
-            var officeOriginal = Mapper.Map<Office>(office);
-            await Repo.Add(officeOriginal);
+            var officeOriginal = AutoMapper.Map<Office>(office);
+            await _repo.Add(officeOriginal);
         }
 
-        public async Task DeleteOffice(OfficeDto office)
+        public async Task Delete(int id)
         {
-            var officeOriginal = MapperReverse.Map<Office>(office);
-            await Repo.Remove(officeOriginal);
+            await _repo.Remove(await _repo.GetByKey(id));
         }
 
 
-        public async Task<OfficeDto> GetOffice(int id)
+        public async Task<OfficeDto> Get(int id)
         {
-           
-            return await Task.Run(() => CurrentMapper.Map<OfficeDto>(Repo.GetByKey(id).Result));
+            var data = await _repo.GetByKey(id);
+            var result = AutoMapper.Map<OfficeDto>(data);
+            return result;
         }
 
-        public async Task UpdateOffice(OfficeDto office)
+        public async Task Update(OfficeDto office)
         {
-            var existingOffice = Repo.GetByKey(office.Id).Result;
-            var updatedOffice = MapperReverse.Map<Office>(office);
-            await Repo.Update(existingOffice, updatedOffice);
+            var existingOffice = await _repo.GetByKey(office.Id);
+            var updatedOffice = AutoMapper.Map<Office>(office);
+            await _repo.Update(existingOffice, updatedOffice);
         }
     }
 }

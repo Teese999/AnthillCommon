@@ -75,7 +75,7 @@ namespace Project.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("OrganisationId")
+                    b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateTime")
@@ -84,10 +84,14 @@ namespace Project.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("OrganizationId");
+
                     b.ToTable("Office");
                 });
 
-            modelBuilder.Entity("AnthillCommon.Models.Organisation", b =>
+            modelBuilder.Entity("AnthillCommon.Models.Organization", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,7 +113,7 @@ namespace Project.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organisation");
+                    b.ToTable("Organization");
                 });
 
             modelBuilder.Entity("AnthillCommon.Models.User", b =>
@@ -197,6 +201,21 @@ namespace Project.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("AnthillCommon.Models.Office", b =>
+                {
+                    b.HasOne("AnthillCommon.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("AnthillCommon.Models.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId");
+
+                    b.Navigation("City");
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("AnthillCommon.Models.User", b =>

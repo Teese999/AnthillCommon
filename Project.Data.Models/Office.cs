@@ -13,6 +13,8 @@ namespace AnthillCommon.Models
         public DateTime CreateDate { get; set; }
         public DateTime UpdateTime { get; set; }
         public int CityId { get; set; }
-        public int OrganisationId { get; set; }
+        public int OrganizationId { get; set; }
+        public Organization Organization { get; set; }
+        public City City { get; set; }
     }
 }

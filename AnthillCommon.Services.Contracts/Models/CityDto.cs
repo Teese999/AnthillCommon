@@ -1,4 +1,4 @@
-﻿using AnthillCommon.Common.Contracts;
+﻿
 using AnthillCommon.Models;
 using System;
 using System.Collections.Generic;
@@ -6,8 +6,8 @@ using System.Text;
 
 namespace AnthillCommon.Services.Contracts.Models
 {
-    //osipenkom: зачем тут используется интерфейс IEntityDto, в чем суть?
-    public class CityDto : IEntityDto
+
+    public class CityDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

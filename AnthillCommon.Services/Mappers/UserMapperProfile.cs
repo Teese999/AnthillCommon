@@ -5,17 +5,19 @@ using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Mappers;
 using AutoMapper;
+using AutoMapper.EntityFramework;
+using AutoMapper.EntityFrameworkCore;
+using AutoMapper.Collection;
 
 namespace AnthillCommon.Services.Mappers
 {
-    public class CityMapperProfile : Profile
+    public class UserMapperProfile : Profile
     {
-        public CityMapperProfile()
+        public UserMapperProfile()
         {
-            CreateMap<City, CityDto>();
-            CreateMap<CityDto, City>()
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>()
                 .ForMember(x => x.Id, y => y.Ignore());
         }
     }
 }
-

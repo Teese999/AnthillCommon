@@ -1,5 +1,4 @@
-﻿using AnthillCommon.Common.Contracts;
-using AnthillCommon.Contracts;
+﻿using AnthillCommon.Contracts;
 using AnthillCommon.DataContext;
 using AnthillCommon.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +23,7 @@ namespace Project.Data
             container.RegisterType<ICityRepository, CityRepository>(new TLifetime());
             container.RegisterType<IUserRepository, UserRepository>(new TLifetime());
             container.RegisterType<IOfficeRepository, OfficeRepository>(new TLifetime());
-            container.RegisterType<IOrganisationRepository, OrganisationRepository>(new TLifetime());
+            container.RegisterType<IOrganizationRepository, OrganizationRepository>(new TLifetime());
             container.RegisterType<IAccountRepository, AccountRepository>(new TLifetime());
 
         }

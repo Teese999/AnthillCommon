@@ -20,22 +20,17 @@ namespace AnthillCommon.Repositories
 
         public async Task<Account> Get(int id)
         {
-            //osipenkom: здесь неправильно используется ассинхронность. правильно так:
-            //var account = await GetByKey(id);
-            //return account;
-            //osipenkom: не ленись дописывать имя переменных до конца, acc = account
-            var acc = GetByKey(id).Result;
-            return await Task.Run(() => acc);
+
+            var account = await  GetByKey(id);
+            return account;
         }
 
         public async Task<Account> GetByLogin(string login)
         {
-            //osipenkom: здесь неправильно используется ассинхронность. правильно так:
-            //var account = await GetQuery(x => x.Login == login).FirstOrDefaultAsync();
-            //return account;
-            var acc = GetQuery(x => x.Login == login).FirstOrDefault();
 
-            return await Task.Run(() => acc);
+            var account = await GetQuery(x => x.Login == login).FirstOrDefaultAsync();
+
+            return account;
         }
 
         async Task<Account>  IAccountRepository.Add(Account entity)

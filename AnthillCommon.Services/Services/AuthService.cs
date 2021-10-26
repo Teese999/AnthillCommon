@@ -18,30 +18,28 @@ using Unity;
 
 namespace AnthillCommon.Services.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService : AbstractService, IAuthService
     {
         private readonly Settings _settings;
         private readonly IPasswordHasher _passwordHasher;
-        //osipenkom: по конвенции приватные поля именуются как _blabla
-        private readonly IUnityContainer _Container;
-        private readonly CommonContext _Context = new CommonContext();
-        private AccountRepository _Repo;
-        public AuthService(IUnityContainer container, IPasswordHasher passwordHasher, Settings settings)
+        private readonly IUnityContainer _container;
+        private readonly CommonContext _context = new CommonContext();
+        private readonly AccountRepository _repo;
+        public AuthService(IUnityContainer container, IPasswordHasher passwordHasher, Settings settings):base(container)
         {
             _passwordHasher = passwordHasher;
-            _Container = container;
+            _container = container;
             _settings = settings;
-            _Repo = new AccountRepository(_Context);
+            _repo = new AccountRepository(_context);
 
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
         {
-            
-            var acc = await _Repo.GetByLogin(login);
+
+            var acc = await _repo.GetByLogin(login);
 
             if (acc == null || !_passwordHasher.Check(acc.Password, password).Verified)
             {
-                //osipenkom: лишние символы. за этим тоже старайся следить
                 return new AccessTokenResult { error_message = "Invalid grant" }; ;
             }
 
@@ -49,32 +47,24 @@ namespace AnthillCommon.Services.Services
             return jwtToken;
         }
 
-        public async Task<SignupResponse> Signup(string login, string nickName, string password)
+        public async Task<AccessTokenResult> Signup(string login, string nickName, string password)
         {
-            if (_Repo.GetByLogin(login).Result != null)
+            if (await _repo.GetByLogin(login) != null)
             {
-                return new SignupResponse
-                {
-                    TokenResults = new AccessTokenResult { error_message = "User already exists" },
-                };
+
+                return new AccessTokenResult { error_message = "User already exists" };
             }
 
-            //osipenkom: неправильно название переменной. по конвенции должно быть blabla
-            var Account = new Account(login, nickName, _passwordHasher.Hash(password));
+            var account = new Account(login, nickName, _passwordHasher.Hash(password));
 
             //Add acc
-            await _Repo.Add(Account);
+            await _repo.Add(account);
             // save context changes
-            await _Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
 
-            var response = new SignupResponse()
-            {
-                // generate jwt token
-                TokenResults = GenerateJwtToken(Account)
-            };
 
-            return response;
+            return GenerateJwtToken(account);
         }
         private AccessTokenResult GenerateJwtToken(Account acc)
         {
@@ -92,8 +82,6 @@ namespace AnthillCommon.Services.Services
                     new Claim("Login", acc.Login)
                 }),
 
-                //Expires = DateTime.UtcNow.AddMinutes(_settings.LIFETIME),
-                //NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

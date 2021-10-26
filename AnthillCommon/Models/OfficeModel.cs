@@ -7,10 +7,7 @@ namespace AnthillCommon.Models
 {
     public class OfficeModel
     {
-        //osipenkom: зачем тут конструктор без параметров, который нигде не импользуется?
-        public OfficeModel()
-        {
-        }
+
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -18,7 +15,7 @@ namespace AnthillCommon.Models
         public DateTime CreateDate { get; set; }
         public DateTime UpdateTime { get; set; }
         public int CityId { get; set; }
-        public int OrganisationId { get; set; }
+        public int OrganizationId { get; set; }
 
     }
 }

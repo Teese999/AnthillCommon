@@ -12,47 +12,36 @@ using Unity;
 
 namespace AnthillCommon.Services.Services
 {
-    public class UserService : AbstractService<User, UserDto>, IUserService
+    public class UserService : AbstractService, IUserService
     {
-        //osipenkom: все те же комментарии, что и в CityService
-        public UserService(IUnityContainer container)
-           : base(container) 
+        private readonly UserRepository _repo = new UserRepository(new CommonContext());
+
+        public UserService(IUnityContainer container, IMapper autoMapper) : base(container, autoMapper) { }
+        public async Task Add(UserDto user)
         {
-            Mapper = UserMapper.Mapper;
-            MapperReverse = UserMapper.MapperReverse;
+            var addeduser = AutoMapper.Map<User>(user);
+            await _repo.Add(addeduser);
+        }
+
+        public async Task Delete(int id)
+        {
+            await _repo.Remove(await _repo.GetByKey(id));
         }
 
 
-        private readonly UserMapper UserMapper = new UserMapper();
-        private readonly Mapper Mapper;
-        private readonly Mapper MapperReverse;
-        private readonly UserRepository Repo = new UserRepository(new CommonContext());
-        public async Task AddUser(UserDto user)
+        public async Task<UserDto> Get(int id)
         {
-            var addeduser = Mapper.Map<User>(user);
-            await Repo.Add(addeduser);
+            var data = await _repo.GetByKey(id);
+            var result = AutoMapper.Map<UserDto>(data);
+            return result;
         }
 
-        public async Task DeleteUser(UserDto user)
+        public async Task Update(UserDto user)
         {
-            var userOriginal = MapperReverse.Map<User>(user);
+            var existingUser = await _repo.GetByKey(user.Id);
+            var updatedUser = AutoMapper.Map<User>(user);
 
-            await Repo.Remove(userOriginal);
-        }
-
-
-        public async Task<UserDto> GetUser(int id)
-        {
-
-            return await Task.Run(() => CurrentMapper.Map<UserDto>(Repo.GetByKey(id).Result));
-        }
-
-        public async Task UpdateUser(UserDto user)
-        {
-            var existingUser = Repo.GetByKey(user.Id).Result;
-            var updatedUser = MapperReverse.Map<User>(user);
-
-            await Repo.Update(existingUser, updatedUser);
+            await _repo.Update(existingUser, updatedUser);
         }
     }
 }

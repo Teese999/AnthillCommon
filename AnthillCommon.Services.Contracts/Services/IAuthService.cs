@@ -8,7 +8,7 @@ namespace AnthillCommon.Services.Contracts.Services
 {
     public interface IAuthService
     {
-        Task<SignupResponse> Signup(string login, string nickName, string password);
+        Task<AccessTokenResult> Signup(string login, string nickName, string password);
         Task<AccessTokenResult> Signin(string login, string password);
     }
 }

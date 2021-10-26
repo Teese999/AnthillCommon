@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using Unity;
 using Unity.Lifetime;
 using AnthillCommon.Services.Mappers;
+using AnthilCommon.Common.Services;
+using AnthillCommon.Mappings;
 
 namespace AnthillCommon
 {
@@ -34,8 +36,7 @@ namespace AnthillCommon
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        //osipenkom: async метод без асинхронного вызова внутри не имеет смысла.
-        public async void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
                 .AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true)
@@ -43,7 +44,6 @@ namespace AnthillCommon
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             services.AddHttpContextAccessor();
-            services.AddControllers();
 
             ///JWT
             services.AddAuthentication(x =>
@@ -73,8 +73,9 @@ namespace AnthillCommon
 
             services.AddAuthorization();
 
-            //osipenkom: все автомапперы можно зарегестрировать в DI здесь таким образом. тогда не нужна будет ни фабрика, ни интерфейс автомаппера - всё очень упрощается.
-            services.AddAutoMapper(typeof(CityMapperProfile));
+            services.AddAutoMapper(new Type[] { typeof(CityMapperProfile), typeof(UserMapperProfile), typeof(OfficeMapperProfile), typeof(OrganizationMapperProfile) } );
+            services.AddAutoMapper(new Type[] { typeof(CityModelMapper), typeof(UserModelMapper), typeof(OfficeModelMapper), typeof(OrganizationModelMapper) });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +100,7 @@ namespace AnthillCommon
 
 
             });
+            
         }
 
         public void ConfigureContainer(IUnityContainer container)
@@ -107,19 +109,18 @@ namespace AnthillCommon
             ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
         }
 
-        //osipenkom: неиспользуемый метод. по конвенции назван неправильно. названия переменных внутри неправильные.
-        private async void commonDbCreaTE()
+        private async void CommonDbCreate()
         {
             var cont = new CommonContext();
-            var qq = new OrganisationRepository(cont);
-            var z = new CityRepository(cont);
-            var a = new OfficeRepository(cont);
-            var u = new UserRepository(cont);
+            var organisation = new OrganizationRepository(cont);
+            var city = new CityRepository(cont);
+            var office = new OfficeRepository(cont);
+            var user = new UserRepository(cont);
             var i = 0;
-            foreach (var item in a.GetAll().Result)
+            foreach (var item in await office.GetAll())
             {
 
-                await u.Add(new User()
+                await user.Add(new User()
                 {
                     FirstName = $"FirstName_{i}",
                     LastName = $"LastName_{i}",
@@ -135,7 +136,7 @@ namespace AnthillCommon
             }
             //for (int i = 0; i < 10; i++)
             //{
-            //    await z.Add(new City()
+            //    await city.Add(new City()
             //    {
             //        Name = $"City_{i}",
             //        State = $"State_{i}",
@@ -153,6 +154,27 @@ namespace AnthillCommon
             //        CreateDate = DateTime.Now,
             //        UpdateTime = DateTime.Now,
             //        IsFired = false,
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    await organisation.Add( new Organization()
+            //    {
+            //        Name = $"Organisation_{i}",
+            //        CreateDate = DateTime.Now,
+            //        UpdateTime = DateTime.Now
+            //    });
+            //}
+            //for (int i = 1; i < 11; i++)
+            //{
+            //    await office.Add(new Office()
+            //    {
+            //        Name = $"Office_{i}",
+            //        Address = $"Address_{i}",
+            //        CreateDate = DateTime.Now,
+            //        UpdateTime = DateTime.Now,
+            //        Organization = await organisation.GetByKey(i),
+            //        City = await city.GetByKey(i),
+            //    });
+            //}
         }
     }
 }

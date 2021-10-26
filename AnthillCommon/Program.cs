@@ -28,13 +28,6 @@ namespace AnthillCommon
                     webBuilder.UseStartup<Startup>();
 
                 });
-
-        //osipenkom: закомментированного, неиспользуемого кода в идеале быть не должно.
-        //public static IHostBuilder CreateHostBuilder(string[] args) =>
-        //   Host.CreateDefaultBuilder(args)
-        //       .ConfigureWebHostDefaults(webBuilder =>
-        //       {
-        //           webBuilder.UseStartup<Startup>();
-        //       });
-    }
+        }
 }
+

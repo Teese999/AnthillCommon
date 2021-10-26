@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,62 +12,59 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Controllers
 {
-    //osipenkom: те же комментарии, что и для CityController
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class OfficeController : Controller
     {
         private readonly IOfficeService _officeService;
-        public OfficeController(IOfficeService OfficeService)
+        private readonly IMapper _mapper;
+        public OfficeController(IOfficeService officeService, IMapper mapper)
         {
-            _officeService = OfficeService;
+            _officeService = officeService;
+            _mapper = mapper;
         }
         [HttpGet]
-        [Route("GetOffice/{id}")]
-        public async Task<IActionResult> GetOffice(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 return BadRequest("Id must be none-negative");
             }
-            var Office = await _officeService.GetOffice(id);
+            var Office = await _officeService.Get(id);
             return Ok(Office);
         }
         [HttpPost]
-        [Route("AddOffice")]
-        public async Task<IActionResult> AddOffice([FromBody] OfficeModel office)
+        public async Task<IActionResult> Add([FromBody] OfficeModel office)
         {
             if (office == null)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new OfficeModelMapper().Mapper;
-            await _officeService.AddOffice(mapper.Map<OfficeDto>(office));
+            await _officeService.Add(_mapper.Map<OfficeDto>(office));
             return Ok();
         }
         [HttpDelete]
-        [Route("DeleteOffice")]
-        public async Task<IActionResult> DeleteOffice([FromBody] OfficeModel office)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (office == null)
+            if (id <= 0)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new OfficeModelMapper().Mapper;
-            await _officeService.DeleteOffice(mapper.Map<OfficeDto>(office));
+            await _officeService.Delete(id);
             return Ok();
         }
         [HttpPut]
-        [Route("UpdateOffice")]
-        public async Task<IActionResult> UpdateOffice([FromBody] OfficeModel office)
+        public async Task<IActionResult> Update([FromBody] OfficeModel office)
         {
             if (office == null)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new OfficeModelMapper().Mapper;
-            await _officeService.UpdateOffice(mapper.Map<OfficeDto>(office));
+            await _officeService.Update(_mapper.Map<OfficeDto>(office));
             return Ok();
         }
     }

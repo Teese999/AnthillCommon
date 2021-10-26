@@ -7,10 +7,7 @@ namespace AnthillCommon.Models
 {
     public class CityModel
     {
-        //osipenkom: зачем тут конструктор без параметров, который нигде не импользуется?
-        public CityModel()
-        {
-        }
+
 
         public int Id { get; set; }
         public string Name { get; set; }

@@ -8,69 +8,67 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace AnthillCommon.Controllers
 {
-    //osipenkom: почитай best practices от Microsoft https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class CityController : Controller
     {
         private readonly ICityService _cityService;
-        public CityController(ICityService cityService)
+        private readonly IMapper _mapper;
+        public CityController(ICityService cityService, IMapper mapper)
         {
             _cityService = cityService;
+            _mapper = mapper;
         }
-        //osipenkom: "GetCity" здесь лишнее. HTTP метод GET в контроллере city сам по себе говорит о том, что при вызове произойдёт GetCity
+
         [HttpGet]
-        [Route("GetCity/{id}")]
-        public async Task<IActionResult> GetCity(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 return BadRequest("Id must be none-negative");
             }
-            var city = await _cityService.GetCity(id);
+            var city = await _cityService.Get(id);
             return Ok(city);
         }
-        //osipenkom: "AddCity" здесь лишнее. Смотри описание выше.
+
         [HttpPost]
-        [Route("AddCity")]
-        public async Task<IActionResult> AddCity([FromBody] CityModel city)
+        public async Task<IActionResult> Add([FromBody] CityModel city)
         {
             if (city == null)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new CityModelMapper().Mapper;
-            await _cityService.AddCity(mapper.Map<CityDto>(city));
+            
+            await _cityService.Add(_mapper.Map<CityDto>(city));
             return Ok();
         }
-        //osipenkom: "DeleteCity" здесь лишнее. Смотри описание выше.
+
         [HttpDelete]
-        [Route("DeleteCity")]
-        public async Task<IActionResult> DeleteCity([FromBody] CityModel city)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (city == null)
+            if (id <= 0)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new CityModelMapper().Mapper;
-            await _cityService.DeleteCity(mapper.Map<CityDto>(city));
+            await  _cityService.Delete(id);
             return Ok();
         }
-        //osipenkom: "UpdateCity" здесь лишнее. Смотри описание выше.
+
         [HttpPut]
-        [Route("UpdateCity")]
-        public async Task<IActionResult> UpdateCity([FromBody] CityModel city)
+        public async Task<IActionResult> Update([FromBody] CityModel city)
         {
             if (city == null)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new CityModelMapper().Mapper;
-            await _cityService.UpdateCity(mapper.Map<CityDto>(city));
+            await _cityService.Update(_mapper.Map<CityDto>(city));
             return Ok();
         }
     }

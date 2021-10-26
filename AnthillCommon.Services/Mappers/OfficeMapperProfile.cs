@@ -8,14 +8,14 @@ using AutoMapper;
 
 namespace AnthillCommon.Services.Mappers
 {
-    public class CityMapperProfile : Profile
+    public class OfficeMapperProfile : Profile
     {
-        public CityMapperProfile()
+        public OfficeMapperProfile()
         {
-            CreateMap<City, CityDto>();
-            CreateMap<CityDto, City>()
+            CreateMap<Office, OfficeDto>();
+            CreateMap<OfficeDto, Office>()
                 .ForMember(x => x.Id, y => y.Ignore());
         }
+
     }
 }
-

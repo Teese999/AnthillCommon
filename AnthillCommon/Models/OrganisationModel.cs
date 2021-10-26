@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Models
 {
-    public class OrganisationModel
+    public class OrganizationModel
     {
-        //osipenkom: зачем тут конструктор без параметров, который нигде не импользуется?
-        public OrganisationModel()
-        {
-        }
+
 
         public int Id { get; set; }
         public string Name { get; set; }

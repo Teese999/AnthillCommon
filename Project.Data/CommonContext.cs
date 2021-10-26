@@ -26,7 +26,7 @@ namespace AnthillCommon.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserMap());
-            modelBuilder.ApplyConfiguration(new OrganisationMap());
+            modelBuilder.ApplyConfiguration(new OrganizationMap());
             modelBuilder.ApplyConfiguration(new OfficeMap());
             modelBuilder.ApplyConfiguration(new CityMap());
             modelBuilder.ApplyConfiguration(new AccountMap());
@@ -35,7 +35,7 @@ namespace AnthillCommon.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //osipenkom: здесь не должно быть хардкода, эта строка должна приходить из конфига
+               
                 optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Администратор\Documents\AnthillCommonBd.mdf;Integrated Security=True;Connect Timeout=30");
             }
         }

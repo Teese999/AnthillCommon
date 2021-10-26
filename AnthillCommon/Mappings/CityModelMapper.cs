@@ -4,19 +4,11 @@ using AutoMapper;
 
 namespace AnthillCommon.Mappings
 {
-    //osipenkom: у маппера пропал интерфейс
-    public class CityModelMapper
+    public class CityModelMapper : Profile
     {
-        private MapperConfiguration configuration;
-        public Mapper Mapper;
         public CityModelMapper()
         {
-            configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<CityModel, CityDto>();
-            });
-            configuration.AssertConfigurationIsValid();
-            Mapper = new Mapper(configuration);
+            CreateMap<CityModel, CityDto>();
         }
     }
 }

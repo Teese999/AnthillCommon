@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Services.Contracts.Services
 {
-    //osipenkom: те же комментарии, что и для ICityService
-    public interface IOrganisationService
+    public interface IOrganizationService
     {
-        Task<OrganisationDto> GetOrganisation(int id);
-        Task AddOrganisation(OrganisationDto organisation);
-        Task UpdateOrganisation (OrganisationDto organisation);
-        Task DeleteOrganisation(OrganisationDto organisation);
+        Task<OrganizationDto> Get(int id);
+        Task Add(OrganizationDto Organization);
+        Task Update (OrganizationDto Organization);
+        Task Delete(int id);
     }
 }

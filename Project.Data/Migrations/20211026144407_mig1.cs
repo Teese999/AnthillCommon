@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class mig1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,25 +42,7 @@ namespace Project.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Office",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", maxLength: 19, nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", maxLength: 19, nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
-                    OrganisationId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Office", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Organisation",
+                name: "Organization",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,7 +53,37 @@ namespace Project.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organisation", x => x.Id);
+                    table.PrimaryKey("PK_Organization", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Office",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", maxLength: 19, nullable: false),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", maxLength: 19, nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Office", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Office_City_CityId",
+                        column: x => x.CityId,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Office_Organization_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organization",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,6 +114,16 @@ namespace Project.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Office_CityId",
+                table: "Office",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Office_OrganizationId",
+                table: "Office",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_OfficeId",
                 table: "User",
                 column: "OfficeId");
@@ -113,16 +135,16 @@ namespace Project.Data.Migrations
                 name: "Account");
 
             migrationBuilder.DropTable(
-                name: "City");
-
-            migrationBuilder.DropTable(
-                name: "Organisation");
-
-            migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
                 name: "Office");
+
+            migrationBuilder.DropTable(
+                name: "City");
+
+            migrationBuilder.DropTable(
+                name: "Organization");
         }
     }
 }

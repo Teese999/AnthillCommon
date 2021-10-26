@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Contracts
 {
-    //osipenkom: тут тоже можно было бы использовать IEntityRepository как и в других репозиториях
     public interface IAccountRepository
     {
         Task<Account> GetByLogin(string login);

@@ -2,73 +2,68 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AnthillCommon.Controllers
 {
-    //osipenkom: те же комментарии, что и для CityController
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
         [HttpGet]
-        [Route("GetUser/{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 return BadRequest("Id must be none-negative");
             }
 
-            var user = await _userService.GetUser(id);
+            var user = await _userService.Get(id);
             return Ok(user);
         }
         [HttpPost]
-        [Route("AddUser")]
-        public async Task<IActionResult> AddUser([FromBody] UserModel user)
+        public async Task<IActionResult> Add([FromBody] UserModel user)
         {
             if (user == null)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new UserModelMapper().Mapper;
-            await _userService.AddUser(mapper.Map<UserDto>(user));
+
+            await _userService.Add(_mapper.Map<UserDto>(user));
             return Ok();
         }
         [HttpDelete]
-        [Route("DeleteUser")]
-        public async Task<IActionResult> DeleteUser([FromBody] UserModel user)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (user == null)
+            if (id <= 0)
             {
                 return BadRequest("object is null");
             }
-            var mapper = new UserModelMapper().Mapper;
-            //var us = mapper.Map<UserDto>(user);
-            await _userService.DeleteUser(mapper.Map<UserDto>(user));
+
+            await _userService.Delete(id);
             return Ok();
         }
         [HttpPut]
-        [Route("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromBody] UserModel user)
+        public async Task<IActionResult> Uppdate([FromBody] UserModel user)
         {
             if (user == null)
             {
                 return BadRequest();
             }
-            var mapper = new UserModelMapper().Mapper;
-            await _userService.UpdateUser(mapper.Map<UserDto>(user));
+            await _userService.Update(_mapper.Map<UserDto>(user));
             return Ok();
         }
     }

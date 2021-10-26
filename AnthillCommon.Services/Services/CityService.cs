@@ -2,10 +2,8 @@
 using AnthillCommon.DataContext;
 using AnthillCommon.Models;
 using AnthillCommon.Repositories;
-using AnthillCommon.Services.Contracts.Mappers;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
-using AnthillCommon.Services.Mappers;
 using AutoMapper;
 using System.Threading.Tasks;
 using Unity;
@@ -13,62 +11,39 @@ using Unity;
 
 namespace AnthillCommon.Services.Services
 {
-    public class CityService : AbstractService<City, CityDto>, ICityService
+    public class CityService : AbstractService, ICityService
     {
-        public CityService(IUnityContainer container, IMapper autoMapper)
-            : base(container) 
+        private readonly CityRepository _repo = new CityRepository(new CommonContext());
+
+        public CityService(IUnityContainer container, IMapper autoMapper) : base(container, autoMapper) { }
+
+        public async Task Add(CityDto city)
         {
-            //osipenkom: зачем тут два мапера? можно же один маппер настроить и в одну и в другую сторону
-            Mapper = CityMapper.Mapper;
-            MapperReverse = CityMapper.MapperReverse;
+            var cityOriginal = AutoMapper.Map<City>(city);
+            await _repo.Add(cityOriginal);
         }
 
-        //osipenkom: приватные поля по именной конвенции именуются как _blabla
-        //osipenkom: маппер инстанцирован в обход фабрики. зачем тогда вообще нужна фабрика?
-        private readonly CityMapper CityMapper = new CityMapper();
-        private readonly Mapper Mapper;
-        private readonly Mapper MapperReverse;
-        //osipenkom: репозиторий зарегестрирован в Unity, но инстанцируется явно. Это неправильно
-        private readonly CityRepository Repo = new CityRepository(new CommonContext());
-        
-        //osipenkom: название переменных по конвенции именуется как blabla
-        public async Task AddCity(CityDto City)
+        public async Task Delete(int id)
         {
-            //osipenkom: название переменных по конвенции именуется как blabla
-            var CityOriginal = Mapper.Map<City>(City);
-            await Repo.Add(CityOriginal);
-        }
 
-        public async Task DeleteCity(CityDto City)
-        {
-            var CityOriginal = MapperReverse.Map<City>(City);
-            await Repo.Remove(CityOriginal);
+            await _repo.Remove(await _repo.GetByKey(id));
         }
 
 
-        public async Task<CityDto> GetCity(int id)
+        public async Task<CityDto> Get(int id)
         {
-            //osipenkom: лишний Task.Run, зачем?
-            //var data = await Repo.GetByKey(id);
-            //var result = CurrentMapper.Map<CityDto>(data);
-            //return result;
-            return await Task.Run(() => CurrentMapper.Map<CityDto>(Repo.GetByKey(id).Result));
+            var data = await _repo.GetByKey(id);
+            var result = AutoMapper.Map<CityDto>(data);
+            return result;
         }
 
-        public async Task UpdateCity(CityDto City)
+        public async Task Update(CityDto city)
         {
-            //osipenkom: .Result - неправильно
-            //правильно - var existingCity = await Repo.GetByKey(City.Id);
-            var existingCity = Repo.GetByKey(City.Id).Result;
-            var updatedCity = MapperReverse.Map<City>(City);
-            await Repo.Update(existingCity, updatedCity);
+            
+            var existingCity = await _repo.GetByKey(city.Id);
+            var updatedCity = AutoMapper.Map<City>(city);
+            await _repo.Update(existingCity, updatedCity);
         }
 
-        //osipenkom: посмотри этот пример использования автомаппера, в методе созданном для примера: не нужны ни абстрактные мапперы, ни фабрики.
-        public async Task AddCityNew(CityDto City)
-        {
-            var cityOriginal = AutoMapper.Map<City>(City);
-            await Repo.Add(cityOriginal);
-        }
     }
 }

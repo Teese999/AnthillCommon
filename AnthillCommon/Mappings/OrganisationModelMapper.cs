@@ -4,18 +4,11 @@ using AutoMapper;
 
 namespace AnthillCommon.Mappings
 {
-    public class OrganisationModelMapper
+    public class OrganizationModelMapper : Profile
     {
-        private MapperConfiguration configuration;
-        public Mapper Mapper;
-        public OrganisationModelMapper()
+        public OrganizationModelMapper()
         {
-            configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<OrganisationModel, OrganisationDto>();
-            });
-            configuration.AssertConfigurationIsValid();
-            Mapper = new Mapper(configuration);
+            CreateMap<OrganizationModel, OrganizationDto>();
         }
     }
 }
