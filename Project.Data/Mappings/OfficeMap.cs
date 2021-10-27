@@ -14,6 +14,7 @@ namespace AnthillCommon.Mapping
         {
             builder.ToTable("Office");
             builder.HasKey(x => x.Id);
+            //builder.Property(x => x.Id).UseIdentityColumn(0, 1);
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Address).HasMaxLength(255).IsRequired();
             builder.Property(x => x.CreateDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();

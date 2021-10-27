@@ -23,6 +23,7 @@ using Unity.Lifetime;
 using AnthillCommon.Services.Mappers;
 using AnthilCommon.Common.Services;
 using AnthillCommon.Mappings;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnthillCommon
 {
@@ -70,7 +71,7 @@ namespace AnthillCommon
                         };
                     });
             services.AddControllersWithViews();
-
+            //services.AddDbContext<CommonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAuthorization();
 
             services.AddAutoMapper(new Type[] { typeof(CityMapperProfile), typeof(UserMapperProfile), typeof(OfficeMapperProfile), typeof(OrganizationMapperProfile) } );

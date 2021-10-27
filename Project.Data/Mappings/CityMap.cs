@@ -14,6 +14,7 @@ namespace AnthillCommon.Mapping
         {
             builder.ToTable("City");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn(0, 1);
             builder.Property(x => x.State).HasMaxLength(255).IsRequired(false);
             builder.Property(x => x.Country).HasMaxLength(255).IsRequired();
             builder.Property(x => x.CreateDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();

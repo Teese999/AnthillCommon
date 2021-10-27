@@ -1,4 +1,5 @@
-﻿using AnthillCommon.Contracts;
+﻿
+using AnthillCommon.Contracts;
 using AnthillCommon.DataContext;
 using AnthillCommon.Models;
 using System;
@@ -15,5 +16,6 @@ namespace AnthillCommon.Repositories
         public CityRepository(CommonContext context) : base(context)
         {
         }
+        
     }
 }

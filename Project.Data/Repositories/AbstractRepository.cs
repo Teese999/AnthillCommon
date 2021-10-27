@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace AnthillCommon.Repositories
 {
-    public abstract class AbstractRepository<TEntity> 
+    public abstract class AbstractRepository<TEntity>
         where TEntity : class, IEntity 
     {
         protected AbstractRepository(CommonContext context)
@@ -85,5 +85,6 @@ namespace AnthillCommon.Repositories
         {
             return await GetQuery(criteria).ToListAsync();
         }
+
     }
 }
