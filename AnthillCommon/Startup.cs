@@ -109,6 +109,7 @@ namespace AnthillCommon
             ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
         }
 
+        //osipenkom: этот метод нигде не используется, зачем он нужен?
         private async void CommonDbCreate()
         {
             var cont = new CommonContext();
@@ -134,6 +135,8 @@ namespace AnthillCommon
                 });
                 i++;
             }
+            //osipenkom: закомменченный код делает код "грязным", надо удалять
+
             //for (int i = 0; i < 10; i++)
             //{
             //    await city.Add(new City()

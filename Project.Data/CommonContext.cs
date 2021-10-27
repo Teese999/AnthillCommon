@@ -12,6 +12,7 @@ namespace AnthillCommon.DataContext
 {
     public class CommonContext : DbContext
     {
+        //osipenkom: зачем тут контейнер если он не используется? лишняя зависимость получается
         protected IUnityContainer Container { get; private set; }
 
         public CommonContext(IUnityContainer container) : base()
@@ -35,7 +36,7 @@ namespace AnthillCommon.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-               
+               //osipenkom: коннекшен стринг нужно убирать в конфиг обязательно. это даёт возможность публиковать одно и то же приложение на разные серверы с разными коннекшен стрингами.
                 optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Администратор\Documents\AnthillCommonBd.mdf;Integrated Security=True;Connect Timeout=30");
             }
         }

@@ -13,6 +13,7 @@ namespace AnthillCommon.Services.Services
 {
     public class CityService : AbstractService, ICityService
     {
+        //osipenkom: почему репозиторий инстанцируется явно, а не резолвится контейнером? это нарушает DI-паттерн.
         private readonly CityRepository _repo = new CityRepository(new CommonContext());
 
         public CityService(IUnityContainer container, IMapper autoMapper) : base(container, autoMapper) { }
