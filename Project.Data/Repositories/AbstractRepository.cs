@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 namespace AnthillCommon.Repositories
 {
@@ -22,16 +23,17 @@ namespace AnthillCommon.Repositories
 
         protected IQueryable<TEntity> GetQuery(Expression<Func<TEntity, bool>> criteria = null)
         {
+            
+            
             IQueryable<TEntity> query = Context.Set<TEntity>();
-            query.Load();
             if (criteria != null)
             {
                 query = query.Where(criteria);
             }
-
             return query;
-        }
 
+
+        }
         public async Task<TEntity> GetByKey(int key)
         {
             if (key < 0)
@@ -85,6 +87,17 @@ namespace AnthillCommon.Repositories
         {
             return await GetQuery(criteria).ToListAsync();
         }
-
+        public async Task<IEnumerable<TEntity>> GetRange(int firstIndex, int lastIndex, Expression<Func<TEntity, bool>> criteria = null)
+        {
+            if (criteria == null)
+            {
+                return await Context.Set<TEntity>().Skip(firstIndex).Take(lastIndex).ToListAsync();
+            }
+            else
+            {
+                return await Context.Set<TEntity>().Where(criteria).Skip(firstIndex).Take(lastIndex).ToListAsync();
+            }
+            
+        }
     }
 }

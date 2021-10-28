@@ -18,6 +18,8 @@ namespace AnthillCommon.DataContext
 {
     public class CommonContext : DbContext
     {
+        Random rnd = new Random();
+        public string ConnectionString { get; private set; }
         public CommonContext() : base()
         {
         }
@@ -38,7 +40,7 @@ namespace AnthillCommon.DataContext
             var organizations = new List<Organization>();
             var offices = new List<Office>();
             var cities = new List<City>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 cities.Add(new City()
                 {
@@ -50,7 +52,7 @@ namespace AnthillCommon.DataContext
                     UpdateTime = DateTime.Now
                 });
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 organizations.Add(new Organization()
                 {
@@ -60,22 +62,34 @@ namespace AnthillCommon.DataContext
                     UpdateTime = DateTime.Now
                 });
             }
-            for (int i = 0; i < 10; i++)
+            int id = 1;
+            for (int i = 0; i < 5; i++)
             {
 
                 offices.Add(new Office()
                 {
-                    Id = i + 1,
-                    Name = $"Office_{i+1}",
-                    Address = $"Address_{i+1}",
+                    Id = id,
+                    Name = $"Office_{id}",
+                    Address = $"Address_{id}",
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now,
                     CityId = cities[i].Id,
                     OrganizationId = organizations[i].Id,
                 });
-
+                id++;
+                offices.Add(new Office()
+                {
+                    Id = id,
+                    Name = $"Office_{id}",
+                    Address = $"Address_{id}",
+                    CreateDate = DateTime.Now,
+                    UpdateTime = DateTime.Now,
+                    CityId = cities[i].Id,
+                    OrganizationId = organizations[i].Id,
+                });
+                id++;
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10000; i++)
             {
 
                 users.Add(new User()
@@ -89,7 +103,7 @@ namespace AnthillCommon.DataContext
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now,
                     IsFired = false,
-                    OfficeId = offices[i].Id,
+                    OfficeId = offices[rnd.Next(offices.Count)].Id,
                 });
 
             }
@@ -109,8 +123,9 @@ namespace AnthillCommon.DataContext
 
             if (!optionsBuilder.IsConfigured)
             {
-
+                ConnectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                
             }
         }
     }

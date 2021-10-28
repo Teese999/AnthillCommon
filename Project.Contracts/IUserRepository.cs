@@ -9,6 +9,6 @@ namespace AnthillCommon.Contracts
 {
     public interface IUserRepository : IEntityRepository<User>
     {
-
+        
     }
 }

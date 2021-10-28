@@ -33,6 +33,17 @@ namespace AnthillCommon.Controllers
             var user = await _userService.Get(id);
             return Ok(user);
         }
+        [HttpGet]
+        public async Task<IActionResult> Get([FromBody] PaginationSettingsModel pagginationSettings)
+        {
+            if (pagginationSettings == null)
+            {
+                return BadRequest("Settings is Null");
+            }
+
+            var pagginationModel = await _userService.GetPage(_mapper.Map<PaginationSettingsDto>(pagginationSettings));
+            return Ok(_mapper.Map<PaginationModel>(pagginationModel));
+        }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] UserModel user)
         {

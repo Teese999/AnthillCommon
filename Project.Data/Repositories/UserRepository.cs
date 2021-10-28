@@ -16,5 +16,6 @@ namespace AnthillCommon.Repositories
         public UserRepository(CommonContext context) : base(context)
         {
         }
+
     }
 }
