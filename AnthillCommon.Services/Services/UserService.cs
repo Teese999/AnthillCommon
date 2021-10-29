@@ -67,9 +67,10 @@ namespace AnthillCommon.Services.Services
             var nextPage = settingsDto.Clone();
 
             Expression<Func<User, bool>> criteria = null;
+            //osipenkom: много дублирующегося кода в if else
             if (!settingsDto.OrderByOffice && !settingsDto.OrderByCity)
             {
-                
+                //osipenkom: снова .Result, которые нарушает async await паттерн. я уже об этом писал
                 data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage).Result.ToList();
                 pagesCount = await _repoUser.GetEntitiesCount() / settingsDto.CountPerPage;
                 usersCount = await _repoUser.GetEntitiesCount();

@@ -12,6 +12,7 @@ namespace AnthillCommon.Services.Contracts.Models
         public bool OrderByOffice { get; set; }
         public bool OrderByCity { get; set; }
         public int SelectedOffice { get; set; }
+        //osipenkom: опечатка
         public int SelctedCity { get; set; }
 
         public PaginationSettingsDto Clone()
