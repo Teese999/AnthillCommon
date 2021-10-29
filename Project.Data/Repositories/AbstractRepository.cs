@@ -105,5 +105,10 @@ namespace AnthillCommon.Repositories
             
             return await Context.Set<TEntity>().CountAsync();
         }
+        public async Task<int> GetEntitiesCount(Expression<Func<TEntity, bool>> criteria)
+        {
+            
+            return await GetQuery(criteria).CountAsync();
+        }
     }
 }

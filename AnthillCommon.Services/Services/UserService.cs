@@ -48,6 +48,10 @@ namespace AnthillCommon.Services.Services
         }
         public async Task<PaginationModelDto> GetPage(PaginationSettingsDto settingsDto)
         {
+            if (settingsDto.CountPerPage == 0)
+            {
+                settingsDto.CountPerPage = 10;
+            }
             var paginationModel = new PaginationModelDto();
 
             var _repoUser = _container.Resolve<IUserRepository>();
@@ -55,8 +59,9 @@ namespace AnthillCommon.Services.Services
             var data = new List<User>();
 
             var firstUserIndex = settingsDto.CountPerPage * (settingsDto.PageNumber);
-        
 
+            var pagesCount = 0;
+            var usersCount = 0;
 
             var prevPage = settingsDto.Clone();
             var nextPage = settingsDto.Clone();
@@ -64,12 +69,17 @@ namespace AnthillCommon.Services.Services
             Expression<Func<User, bool>> criteria = null;
             if (!settingsDto.OrderByOffice && !settingsDto.OrderByCity)
             {
+                
                 data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage).Result.ToList();
+                pagesCount = await _repoUser.GetEntitiesCount() / settingsDto.CountPerPage;
+                usersCount = await _repoUser.GetEntitiesCount();
             }
             if (settingsDto.OrderByCity)
             {
                 var _repoOffice = _container.Resolve<IOfficeRepository>();
                 var officesInSelectedCity = await _repoOffice.GetMany(x => x.City.Id == settingsDto.SelctedCity);
+
+                
 
                 criteria = (x => officesInSelectedCity
                     .Select(x => x.Id).ToList()
@@ -77,23 +87,32 @@ namespace AnthillCommon.Services.Services
 
                 data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
 
+                pagesCount = await _repoUser.GetEntitiesCount(criteria) / settingsDto.CountPerPage;
+                usersCount = await _repoUser.GetEntitiesCount(criteria);
+
             }
             else if (settingsDto.OrderByOffice)
             {
                 criteria = (x => x.OfficeId == settingsDto.SelectedOffice);
 
                 data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
+
+                pagesCount = await _repoUser.GetEntitiesCount(criteria) / settingsDto.CountPerPage;
+                usersCount = await _repoUser.GetEntitiesCount(criteria);
             }
             
-            var pagesCount = await _repoUser.GetEntitiesCount() / settingsDto.CountPerPage;
-            var usersCount = await _repoUser.GetEntitiesCount();
+
 
             if (settingsDto.PageNumber > 1) { prevPage.PageNumber -= 1; }
             else { prevPage.PageNumber = 0; }
 
-            if (((settingsDto.PageNumber+1) * settingsDto.CountPerPage) <= (data.Count))
+            if ((settingsDto.PageNumber + 1) <= pagesCount)
             {
                 nextPage.PageNumber +=1;
+            }
+            else
+            {
+                nextPage.PageNumber = pagesCount;
             }
 
             return new PaginationModelDto()
