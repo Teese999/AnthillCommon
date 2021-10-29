@@ -87,15 +87,16 @@ namespace AnthillCommon.Repositories
         {
             return await GetQuery(criteria).ToListAsync();
         }
-        public async Task<IEnumerable<TEntity>> GetRange(int firstIndex, int lastIndex, Expression<Func<TEntity, bool>> criteria = null)
+        public async Task<IEnumerable<TEntity>> GetRange(int firstIndex, int countPerPage, Expression<Func<TEntity, bool>> criteria = null)
         {
             if (criteria == null)
             {
-                return await Context.Set<TEntity>().Skip(firstIndex).Take(lastIndex).ToListAsync();
+                
+                return await Context.Set<TEntity>().Skip(firstIndex).Take(countPerPage).ToListAsync();
             }
             else
             {
-                return await Context.Set<TEntity>().Where(criteria).Skip(firstIndex).Take(lastIndex).ToListAsync();
+                return await Context.Set<TEntity>().Where(criteria).Skip(firstIndex).Take(countPerPage).ToListAsync();
             }
             
         }

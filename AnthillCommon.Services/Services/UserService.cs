@@ -55,7 +55,7 @@ namespace AnthillCommon.Services.Services
             var data = new List<User>();
 
             var firstUserIndex = settingsDto.CountPerPage * (settingsDto.PageNumber);
-            var lastUserIndex = firstUserIndex * settingsDto.CountPerPage;
+            var lastUserIndex = firstUserIndex + settingsDto.CountPerPage;
 
             if (lastUserIndex <= 0)
             {
@@ -68,7 +68,7 @@ namespace AnthillCommon.Services.Services
             Expression<Func<User, bool>> criteria = null;
             if (!settingsDto.OrderByOffice && !settingsDto.OrderByCity)
             {
-                data = _repoUser.GetRange(firstUserIndex, lastUserIndex).Result.ToList();
+                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage).Result.ToList();
             }
             if (settingsDto.OrderByCity)
             {
@@ -79,14 +79,14 @@ namespace AnthillCommon.Services.Services
                     .Select(x => x.Id).ToList()
                         .Any(z => z == x.OfficeId));
 
-                data = _repoUser.GetRange(firstUserIndex, lastUserIndex, criteria).Result.ToList();
+                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
 
             }
             else if (settingsDto.OrderByOffice)
             {
                 criteria = (x => x.OfficeId == settingsDto.SelectedOffice);
 
-                data = _repoUser.GetRange(firstUserIndex, lastUserIndex, criteria).Result.ToList();
+                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
             }
 
             if (settingsDto.PageNumber > 1) { prevPage.PageNumber -= 1; }
