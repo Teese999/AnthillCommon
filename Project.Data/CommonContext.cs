@@ -18,7 +18,7 @@ namespace AnthillCommon.DataContext
 {
     public class CommonContext : DbContext
     {
-        Random rnd = new Random();
+        private readonly Random _rnd = new Random();
         public string ConnectionString { get; private set; }
         public CommonContext() : base()
         {
@@ -103,7 +103,7 @@ namespace AnthillCommon.DataContext
                     CreateDate = DateTime.Now,
                     UpdateTime = DateTime.Now,
                     IsFired = false,
-                    OfficeId = offices[rnd.Next(offices.Count)].Id,
+                    OfficeId = offices[_rnd.Next(offices.Count)].Id,
                 });
 
             }

@@ -63,7 +63,6 @@ namespace AnthillCommon.Repositories
 
         public async Task Remove(TEntity entity)
         {
-            var qq = entity;
             Context.Set<TEntity>().Remove(entity);
             await Context.SaveChangesAsync();
         }
@@ -100,14 +99,9 @@ namespace AnthillCommon.Repositories
             }
             
         }
-        public async Task<int> GetEntitiesCount()
+        public async Task<int> GetEntitiesCount(Expression<Func<TEntity, bool>> criteria = null)
         {
-            
-            return await Context.Set<TEntity>().CountAsync();
-        }
-        public async Task<int> GetEntitiesCount(Expression<Func<TEntity, bool>> criteria)
-        {
-            
+
             return await GetQuery(criteria).CountAsync();
         }
     }

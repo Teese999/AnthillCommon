@@ -71,7 +71,7 @@ namespace AnthillCommon
                         };
                     });
             services.AddControllersWithViews();
-            //services.AddDbContext<CommonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddAuthorization();
 
             services.AddAutoMapper(new Type[] { typeof(CityMapperProfile), typeof(UserMapperProfile), typeof(OfficeMapperProfile), typeof(OrganizationMapperProfile), typeof(PaginationModel) } );
@@ -110,75 +110,7 @@ namespace AnthillCommon
             ContainerConfiguration.RegisterTypes<HierarchicalLifetimeManager>(container, Configuration);
         }
 
-        //osipenkom: этот метод нигде не используется, зачем он нужен?
-        private async void CommonDbCreate()
-        {
-            var cont = new CommonContext();
-            var organisation = new OrganizationRepository(cont);
-            var city = new CityRepository(cont);
-            var office = new OfficeRepository(cont);
-            var user = new UserRepository(cont);
-            var i = 0;
-            foreach (var item in await office.GetAll())
-            {
-
-                await user.Add(new User()
-                {
-                    FirstName = $"FirstName_{i}",
-                    LastName = $"LastName_{i}",
-                    Email = $"Mail_{i}",
-                    BirthDate = DateTime.Today,
-                    Gender = $"RandomGender_{i}",
-                    CreateDate = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                    IsFired = false,
-                    Office = item
-                });
-                i++;
-            }
-            //osipenkom: закомменченный код делает код "грязным", надо удалять
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    await city.Add(new City()
-            //    {
-            //        Name = $"City_{i}",
-            //        State = $"State_{i}",
-            //        Country = $"Country_{i}",
-            //        CreateDate = DateTime.Now,
-            //        UpdateTime = DateTime.Now
-            //    });
-            //}
-            //Id = i,
-            //        FirstName = $"FirstName_{i}",
-            //        LastName = $"LastName_{i}",
-            //        Email = $"Mail_{i}",
-            //        BirthDate = DateTime.Today,
-            //        Gender = $"RandomGender_{i}",
-            //        CreateDate = DateTime.Now,
-            //        UpdateTime = DateTime.Now,
-            //        IsFired = false,
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    await organisation.Add( new Organization()
-            //    {
-            //        Name = $"Organisation_{i}",
-            //        CreateDate = DateTime.Now,
-            //        UpdateTime = DateTime.Now
-            //    });
-            //}
-            //for (int i = 1; i < 11; i++)
-            //{
-            //    await office.Add(new Office()
-            //    {
-            //        Name = $"Office_{i}",
-            //        Address = $"Address_{i}",
-            //        CreateDate = DateTime.Now,
-            //        UpdateTime = DateTime.Now,
-            //        Organization = await organisation.GetByKey(i),
-            //        City = await city.GetByKey(i),
-            //    });
-            //}
-        }
+       
+        
     }
 }

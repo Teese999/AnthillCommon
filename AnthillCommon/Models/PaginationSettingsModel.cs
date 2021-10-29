@@ -9,9 +9,7 @@ namespace AnthillCommon.Models
     {
         public int CountPerPage { get; set; }
         public int PageNumber { get; set; }
-        public bool OrderByOffice { get; set; }
-        public bool OrderByCity { get; set; }
-        public int SelectedOffice { get; set; }
-        public int SelctedCity { get; set; }
+        public int? SelectedOffice { get; set; }
+        public int? SelectedCity { get; set; }
     }
 }

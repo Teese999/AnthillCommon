@@ -9,11 +9,8 @@ namespace AnthillCommon.Services.Contracts.Models
 
         public int CountPerPage { get; set; }
         public int PageNumber { get; set; }
-        public bool OrderByOffice { get; set; }
-        public bool OrderByCity { get; set; }
-        public int SelectedOffice { get; set; }
-        //osipenkom: опечатка
-        public int SelctedCity { get; set; }
+        public int? SelectedOffice { get; set; }
+        public int? SelectedCity { get; set; }
 
         public PaginationSettingsDto Clone()
         {
@@ -21,10 +18,8 @@ namespace AnthillCommon.Services.Contracts.Models
             {
                 CountPerPage = CountPerPage,
                 PageNumber = PageNumber,
-                OrderByOffice = OrderByOffice,
-                OrderByCity = OrderByCity,
                 SelectedOffice = SelectedOffice,
-                SelctedCity = SelctedCity,
+                SelectedCity = SelectedCity,
             };
         }
     }

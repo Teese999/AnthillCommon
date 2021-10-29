@@ -48,11 +48,8 @@ namespace AnthillCommon.Services.Services
         }
         public async Task<PaginationModelDto> GetPage(PaginationSettingsDto settingsDto)
         {
-            if (settingsDto.CountPerPage == 0)
-            {
-                settingsDto.CountPerPage = 10;
-            }
-            var paginationModel = new PaginationModelDto();
+            if (settingsDto.CountPerPage == 0) { settingsDto.CountPerPage = 10; }
+
 
             var _repoUser = _container.Resolve<IUserRepository>();
 
@@ -63,63 +60,30 @@ namespace AnthillCommon.Services.Services
             var pagesCount = 0;
             var usersCount = 0;
 
-            var prevPage = settingsDto.Clone();
-            var nextPage = settingsDto.Clone();
-
             Expression<Func<User, bool>> criteria = null;
-            //osipenkom: много дублирующегося кода в if else
-            if (!settingsDto.OrderByOffice && !settingsDto.OrderByCity)
-            {
-                //osipenkom: снова .Result, которые нарушает async await паттерн. я уже об этом писал
-                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage).Result.ToList();
-                pagesCount = await _repoUser.GetEntitiesCount() / settingsDto.CountPerPage;
-                usersCount = await _repoUser.GetEntitiesCount();
-            }
-            if (settingsDto.OrderByCity)
+
+
+            if (settingsDto.SelectedCity != null)
             {
                 var _repoOffice = _container.Resolve<IOfficeRepository>();
-                var officesInSelectedCity = await _repoOffice.GetMany(x => x.City.Id == settingsDto.SelctedCity);
-
-                
+                var officesInSelectedCity = await _repoOffice.GetMany(x => x.City.Id == settingsDto.SelectedCity);
 
                 criteria = (x => officesInSelectedCity
                     .Select(x => x.Id).ToList()
                         .Any(z => z == x.OfficeId));
-
-                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
-
-                pagesCount = await _repoUser.GetEntitiesCount(criteria) / settingsDto.CountPerPage;
-                usersCount = await _repoUser.GetEntitiesCount(criteria);
-
             }
-            else if (settingsDto.OrderByOffice)
+            if (settingsDto.SelectedOffice!= null)
             {
                 criteria = (x => x.OfficeId == settingsDto.SelectedOffice);
-
-                data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
-
-                pagesCount = await _repoUser.GetEntitiesCount(criteria) / settingsDto.CountPerPage;
-                usersCount = await _repoUser.GetEntitiesCount(criteria);
             }
-            
 
+            data = (await _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria)).ToList();
+            pagesCount = await _repoUser.GetEntitiesCount(criteria) / settingsDto.CountPerPage;
+            usersCount = await _repoUser.GetEntitiesCount(criteria);
 
-            if (settingsDto.PageNumber > 1) { prevPage.PageNumber -= 1; }
-            else { prevPage.PageNumber = 0; }
-
-            if ((settingsDto.PageNumber + 1) <= pagesCount)
-            {
-                nextPage.PageNumber +=1;
-            }
-            else
-            {
-                nextPage.PageNumber = pagesCount;
-            }
 
             return new PaginationModelDto()
             {
-                PrevPage = prevPage,
-                NextPage = nextPage,
                 Users = data,
                 PagesCount = pagesCount,
                 UsersCount = usersCount,
