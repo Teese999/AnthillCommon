@@ -9,13 +9,17 @@ namespace AnthillCommon.Services.Contracts.Models
     {
         public PaginationSettingsDto PrevPage { get; set; }
         public PaginationSettingsDto NextPage { get; set; }
+        public int UsersCount { get; set; }
+        public int PagesCount { get; set; }
         public List<User> Users { get; set; } = new List<User>();
 
         public object Clone()
         {
-            return new PaginationModelDto() 
+            return new PaginationModelDto()
             {
-                PrevPage =  PrevPage,
+                UsersCount = UsersCount,
+                PagesCount = PagesCount,
+                PrevPage = PrevPage,
                 NextPage = NextPage,
                 Users = Users
             };

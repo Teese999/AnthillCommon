@@ -17,7 +17,7 @@ namespace AnthillCommon.Contracts
         public Task<IEnumerable<IEntity>> GetMany(Expression<Func<IEntity, bool>> criteria);
 
         public Task<IEnumerable<IEntity>> GetRange(int firstIndex, int lastIndex, Expression<Func<IEntity, bool>> criteria = null);
-
+        public Task<int> GetEntitiesCount();
 
     }
 }

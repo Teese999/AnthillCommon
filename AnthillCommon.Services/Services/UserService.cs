@@ -55,12 +55,8 @@ namespace AnthillCommon.Services.Services
             var data = new List<User>();
 
             var firstUserIndex = settingsDto.CountPerPage * (settingsDto.PageNumber);
-            var lastUserIndex = firstUserIndex + settingsDto.CountPerPage;
+        
 
-            if (lastUserIndex <= 0)
-            {
-                lastUserIndex = settingsDto.CountPerPage;
-            }
 
             var prevPage = settingsDto.Clone();
             var nextPage = settingsDto.Clone();
@@ -88,6 +84,9 @@ namespace AnthillCommon.Services.Services
 
                 data = _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria).Result.ToList();
             }
+            
+            var pagesCount = await _repoUser.GetEntitiesCount() / settingsDto.CountPerPage;
+            var usersCount = await _repoUser.GetEntitiesCount();
 
             if (settingsDto.PageNumber > 1) { prevPage.PageNumber -= 1; }
             else { prevPage.PageNumber = 0; }
@@ -102,7 +101,8 @@ namespace AnthillCommon.Services.Services
                 PrevPage = prevPage,
                 NextPage = nextPage,
                 Users = data,
-
+                PagesCount = pagesCount,
+                UsersCount = usersCount,
 
             };
         }
