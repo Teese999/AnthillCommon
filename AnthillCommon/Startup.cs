@@ -72,6 +72,14 @@ namespace AnthillCommon
                     });
             services.AddControllersWithViews();
 
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Administrator",
+            //         policy => policy.RequireRole("Administrator"));
+            //    options.AddPolicy("Regular",
+            //        policy => policy.RequireRole("Regular"));
+            //});
+
             services.AddAuthorization();
 
             services.AddAutoMapper(new Type[] { typeof(CityMapperProfile), typeof(UserMapperProfile), typeof(OfficeMapperProfile), typeof(OrganizationMapperProfile), typeof(PaginationModel) } );

@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AnthillComon.Common.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             if (id <= 0)
@@ -37,6 +39,7 @@ namespace AnthillCommon.Controllers
             return Ok(Office);
         }
         [HttpPost]
+        [Authorize(Roles = RoleNames.Administrator + "," + RoleNames.Regular)]
         public async Task<IActionResult> Add([FromBody] OfficeModel office)
         {
             if (office == null)
@@ -48,6 +51,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -58,6 +62,7 @@ namespace AnthillCommon.Controllers
             return Ok();
         }
         [HttpPut]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Update([FromBody] OfficeModel office)
         {
             if (office == null)

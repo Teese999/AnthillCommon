@@ -34,11 +34,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnthillCommon.Services\AnthillCommon.Services.csproj" />
+    <ProjectReference Include="..\AnthillComon.Common.Enums\AnthillComon.Common.Enums.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\a\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 
 </Project>

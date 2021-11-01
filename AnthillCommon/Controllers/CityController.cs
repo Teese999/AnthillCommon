@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AnthillComon.Common.Enums;
 
 namespace AnthillCommon.Controllers
 {
@@ -27,6 +28,7 @@ namespace AnthillCommon.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             if (id <= 0)
@@ -36,8 +38,8 @@ namespace AnthillCommon.Controllers
             var city = await _cityService.Get(id);
             return Ok(city);
         }
-
         [HttpPost]
+        [Authorize(Roles = RoleNames.Administrator + "," + RoleNames.Regular)]
         public async Task<IActionResult> Add([FromBody] CityModel city)
         {
             if (city == null)
@@ -48,9 +50,9 @@ namespace AnthillCommon.Controllers
             await _cityService.Add(_mapper.Map<CityDto>(city));
             return Ok();
         }
-
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -62,6 +64,7 @@ namespace AnthillCommon.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Update([FromBody] CityModel city)
         {
             if (city == null)

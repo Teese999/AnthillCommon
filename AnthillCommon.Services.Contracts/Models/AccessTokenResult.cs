@@ -16,6 +16,8 @@ namespace AnthillCommon.Services.Contracts.Models
         [JsonProperty("expires_in")]
         public int? expires_in { get; set; }
         [JsonProperty("error_message")]
+        public string role { get; set; }
+        [JsonProperty("role")]
         public string error_message { get; set; }
     }
 }

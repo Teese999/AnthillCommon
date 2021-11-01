@@ -5,12 +5,14 @@ using AnthillCommon.Repositories;
 using AnthillCommon.Services.Contracts;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AnthillComon.Common.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Project.Data;
 using Project.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,18 +38,18 @@ namespace AnthillCommon.Services.Services
         public async Task<AccessTokenResult> Signin(string login, string password)
         {
 
-            var acc = await _repo.GetByLogin(login);
+            var account = await _repo.GetByLogin(login);
 
-            if (acc == null || !_passwordHasher.Check(acc.Password, password).Verified)
+            if (account == null || !_passwordHasher.Check(account.Password, password).Verified)
             {
                 return new AccessTokenResult { error_message = "Invalid grant" }; ;
             }
 
-            var jwtToken = GenerateJwtToken(acc);
+            var jwtToken = GenerateJwtToken(account);
             return jwtToken;
         }
 
-        public async Task<AccessTokenResult> Signup(string login, string nickName, string password)
+        public async Task<AccessTokenResult> Signup(string login, string nickName, string password, Role role)
         {
             if (await _repo.GetByLogin(login) != null)
             {
@@ -55,9 +57,9 @@ namespace AnthillCommon.Services.Services
                 return new AccessTokenResult { error_message = "User already exists" };
             }
 
-            var account = new Account(login, nickName, _passwordHasher.Hash(password));
+            var account = new Account(login, nickName, _passwordHasher.Hash(password), role);
 
-            //Add acc
+            //Add account
             await _repo.Add(account);
             // save context changes
             await _context.SaveChangesAsync();
@@ -66,7 +68,7 @@ namespace AnthillCommon.Services.Services
 
             return GenerateJwtToken(account);
         }
-        private AccessTokenResult GenerateJwtToken(Account acc)
+        private AccessTokenResult GenerateJwtToken(Account account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_settings.KEY);
@@ -77,16 +79,18 @@ namespace AnthillCommon.Services.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, acc.NickName),
-                    new Claim("Id", acc.Id.ToString()),
-                    new Claim("Login", acc.Login)
+                    new Claim(ClaimTypes.Name, account.NickName),
+                    new Claim("Id", account.Id.ToString()),
+                    new Claim("Login", account.Login),
+                    new Claim(ClaimTypes.Role, account.Role.ToString()),
                 }),
-
+                Expires = DateTime.UtcNow.AddMinutes(_settings.LIFETIME),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
-            var result = new AccessTokenResult { access_token = accessToken, grant_type = "password", expires_in = _settings.LIFETIME };
+            var result = new AccessTokenResult { access_token = accessToken, grant_type = "password", expires_in = _settings.LIFETIME, role = account.Role.ToString()  };
             return result;
         }
     }

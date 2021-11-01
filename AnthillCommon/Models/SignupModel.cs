@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnthillComon.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,5 +21,8 @@ namespace AnthillCommon.Models
         [DataType(DataType.Password)]
         [MinLength(4)]
         public string Password { get; set; }
+
+        [Required]
+        public Role Role { get; set; }
     }
 }

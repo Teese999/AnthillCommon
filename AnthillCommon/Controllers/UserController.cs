@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AnthillComon.Common.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             if (id <= 0)
@@ -34,6 +36,7 @@ namespace AnthillCommon.Controllers
             return Ok(user);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromBody] PaginationSettingsModel pagginationSettings)
         {
             if (pagginationSettings == null)
@@ -45,6 +48,7 @@ namespace AnthillCommon.Controllers
             return Ok(_mapper.Map<PaginationModel>(pagginationModel));
         }
         [HttpPost]
+        [Authorize(Roles = RoleNames.Administrator + "," + RoleNames.Regular)]
         public async Task<IActionResult> Add([FromBody] UserModel user)
         {
             if (user == null)
@@ -57,6 +61,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles =  RoleNames.Administrator)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -68,6 +73,7 @@ namespace AnthillCommon.Controllers
             return Ok();
         }
         [HttpPut]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Uppdate([FromBody] UserModel user)
         {
             if (user == null)
