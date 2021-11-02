@@ -34,7 +34,7 @@ namespace AnthillCommon.DataContext
             modelBuilder.ApplyConfiguration(new OfficeMap());
             modelBuilder.ApplyConfiguration(new CityMap());
             modelBuilder.ApplyConfiguration(new AccountMap());
-
+            modelBuilder.ApplyConfiguration(new RefreshtokenMap());
 
             var users = new List<User>();
             var organizations = new List<Organization>();

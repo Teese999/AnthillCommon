@@ -35,5 +35,12 @@ namespace AnthillCommon.Controllers
             var token = await _authService.Signin(model.Login, model.Password);
             return Ok(token);
         }
+        [HttpPost]
+        [Route("refreshtoken")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenModel model)
+        {
+            var token = await _authService.VerifyAndGenerateToken(model.Token, model.RefreshToken);
+            return Ok(token);
+        }
     }
 }

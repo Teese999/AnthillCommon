@@ -46,6 +46,24 @@ namespace AnthillCommon
 
             services.AddHttpContextAccessor();
 
+            //Settings download
+            var settingsSection = Configuration.GetSection("Settings");
+            services.Configure<Settings>(settingsSection);
+            var settings = settingsSection.Get<Settings>();
+
+
+            var tokenValidationParams = new TokenValidationParameters
+            {
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.KEY)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                RequireExpirationTime = false,
+                ClockSkew = TimeSpan.Zero
+            };
+            services.AddSingleton(tokenValidationParams);
             ///JWT
             services.AddAuthentication(x =>
             {
@@ -54,31 +72,12 @@ namespace AnthillCommon
             })
                     .AddJwtBearer(options =>
                     {
-                        var settingsSection = Configuration.GetSection("Settings");
-                        services.Configure<Settings>(settingsSection);
-                        var settings = settingsSection.Get<Settings>();
 
+                        options.SaveToken = true;
                         options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.KEY)),
-                            ValidateIssuer = false,
-                            ValidateAudience = false,
-                           
-                            ClockSkew = TimeSpan.Zero
-                        };
+                        options.TokenValidationParameters = tokenValidationParams;
                     });
             services.AddControllersWithViews();
-
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("Administrator",
-            //         policy => policy.RequireRole("Administrator"));
-            //    options.AddPolicy("Regular",
-            //        policy => policy.RequireRole("Regular"));
-            //});
 
             services.AddAuthorization();
 
