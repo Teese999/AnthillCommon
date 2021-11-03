@@ -36,6 +36,7 @@ namespace AnthillCommon.Services.Services
             _passwordHasher = passwordHasher;
             _container = container;
             _settings = settings;
+            //osipenkom: явное инстанцирование репозитория
             _repo = new AccountRepository(_context);
             _tokenValidationParams = tokenValidationParams;
         }
@@ -46,6 +47,7 @@ namespace AnthillCommon.Services.Services
 
             if (account == null || !_passwordHasher.Check(account.Password, password).Verified)
             {
+                //osipenkom: лишние символы
                 return new AccessTokenResult { error_message = "Invalid grant" }; ;
             }
 
@@ -128,6 +130,7 @@ namespace AnthillCommon.Services.Services
         }
         public async Task<AccessTokenResult> VerifyAndGenerateToken(string token, string refreshToken)
         {
+            //osipenkom: следи за кодинг стайлом, много лишних переносов строк. код визуально выглядит "разорванным". это касается всего приложения
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
 
@@ -163,7 +166,7 @@ namespace AnthillCommon.Services.Services
             }
 
 
-
+            //osipenkom: для RefreshToken токен нужен репозиторий
             _context.Set<RefreshToken>().Update(storedToken);
 
             await _context.SaveChangesAsync();
