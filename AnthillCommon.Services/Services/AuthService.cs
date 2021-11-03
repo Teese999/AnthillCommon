@@ -8,6 +8,7 @@ using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
 using AnthillComon.Common.Enums;
 using Microsoft.IdentityModel.Tokens;
+using Project.Contracts;
 using Project.Data;
 using Project.Data.Models;
 using System;
@@ -27,8 +28,8 @@ namespace AnthillCommon.Services.Services
         private readonly Settings _settings;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnityContainer _container;
-        private readonly CommonContext _context = new CommonContext();
-        private readonly AccountRepository _repo;
+        private readonly IAccountRepository _accountRepo;
+        private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly TokenValidationParameters _tokenValidationParams;
 
         public AuthService(IUnityContainer container, IPasswordHasher passwordHasher, Settings settings, TokenValidationParameters tokenValidationParams) : base(container)
@@ -36,19 +37,18 @@ namespace AnthillCommon.Services.Services
             _passwordHasher = passwordHasher;
             _container = container;
             _settings = settings;
-            //osipenkom: явное инстанцирование репозитория
-            _repo = new AccountRepository(_context);
+            _refreshTokenRepo = _container.Resolve<IRefreshTokenRepository>();
+            _accountRepo = _container.Resolve<IAccountRepository>();
             _tokenValidationParams = tokenValidationParams;
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
         {
 
-            var account = await _repo.GetByLogin(login);
+            var account = await _accountRepo.GetByLogin(login);
 
             if (account == null || !_passwordHasher.Check(account.Password, password).Verified)
             {
-                //osipenkom: лишние символы
-                return new AccessTokenResult { error_message = "Invalid grant" }; ;
+                return new AccessTokenResult { error_message = "Invalid grant" };
             }
 
             var jwtToken = GenerateJwtToken(account);
@@ -57,20 +57,15 @@ namespace AnthillCommon.Services.Services
 
         public async Task<AccessTokenResult> Signup(string login, string nickName, string password, Role role)
         {
-            if (await _repo.GetByLogin(login) != null)
+            if (await _accountRepo.GetByLogin(login) != null)
             {
 
                 return new AccessTokenResult { error_message = "User already exists" };
             }
-
             var account = new Account(login, nickName, _passwordHasher.Hash(password), role);
 
             //Add account
-            await _repo.Add(account);
-            // save context changes
-            await _context.SaveChangesAsync();
-
-
+            await _accountRepo.Add(account);
 
             return await GenerateJwtToken(account);
         }
@@ -78,8 +73,6 @@ namespace AnthillCommon.Services.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_settings.KEY);
-
-
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -90,7 +83,7 @@ namespace AnthillCommon.Services.Services
                     new Claim("Login", account.Login),
                     new Claim(ClaimTypes.Role, account.Role.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(_settings.LIFETIME),
+                Expires = DateTime.UtcNow.AddHours(_settings.LIFETIME),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -106,8 +99,7 @@ namespace AnthillCommon.Services.Services
                 ExpiryDate = DateTime.UtcNow.AddHours(_settings.REFRESHTOKEN_LIFITIME)
 
             };
-            await _context.Set<RefreshToken>().AddAsync(refreshToken);
-            await _context.SaveChangesAsync();
+            await _refreshTokenRepo.Add(refreshToken);
             var result = new AccessTokenResult { access_token = accessToken, grant_type = "password", expires_in = _settings.LIFETIME, role = account.Role.ToString(), refresh_token = refreshToken.Token };
             return result;
         }
@@ -130,13 +122,8 @@ namespace AnthillCommon.Services.Services
         }
         public async Task<AccessTokenResult> VerifyAndGenerateToken(string token, string refreshToken)
         {
-            //osipenkom: следи за кодинг стайлом, много лишних переносов строк. код визуально выглядит "разорванным". это касается всего приложения
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-
-
-
             var tokenInVerification = jwtTokenHandler.ValidateToken(token, _tokenValidationParams, out var validatedToken);
-
 
             if (validatedToken is JwtSecurityToken jwtSecurityToken)
             {
@@ -148,9 +135,7 @@ namespace AnthillCommon.Services.Services
                 }
             }
 
-
             var utcExpiryDate = long.Parse(tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-
             var expiryDate = UnixTimeStampToDateTime(utcExpiryDate);
 
             if (expiryDate > DateTime.UtcNow)
@@ -158,21 +143,17 @@ namespace AnthillCommon.Services.Services
                 return null;
             }
 
-            var storedToken = _context.Set<RefreshToken>().FirstOrDefault(x => x.Token == refreshToken);
+            var storedToken = _refreshTokenRepo.GetByToken(refreshToken);
 
             if (storedToken == null)
             {
                 return null;
             }
 
-
-            //osipenkom: для RefreshToken токен нужен репозиторий
-            _context.Set<RefreshToken>().Update(storedToken);
-
-            await _context.SaveChangesAsync();
+            _refreshTokenRepo.Update(storedToken);
 
             // Generate a new token
-            var account =  _context.Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
+            var account =  new CommonContext().Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
             return await GenerateJwtToken(account);
 
 

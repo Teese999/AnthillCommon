@@ -35,9 +35,8 @@ namespace AnthillCommon.Repositories
 
         async Task<Account>  IAccountRepository.Add(Account entity)
         {
-            //osipenkom: лишний Task.Run
             await Add(entity);
-            return await Task.Run(() => entity);
+            return entity;
         }
     }
 }

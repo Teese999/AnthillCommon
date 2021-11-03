@@ -2,6 +2,8 @@
 using AnthillCommon.DataContext;
 using AnthillCommon.Repositories;
 using Microsoft.Extensions.Configuration;
+using Project.Contracts;
+using Project.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +27,7 @@ namespace Project.Data
             container.RegisterType<IOfficeRepository, OfficeRepository>(new TLifetime());
             container.RegisterType<IOrganizationRepository, OrganizationRepository>(new TLifetime());
             container.RegisterType<IAccountRepository, AccountRepository>(new TLifetime());
+            container.RegisterType<IRefreshTokenRepository, RefreshTokenRepository>(new TLifetime());
 
         }
     }
