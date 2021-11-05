@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AnthillCommon.Services.ValidationFilters;
 using AnthillComon.Common.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ namespace AnthillCommon.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    //[ServiceFilter(typeof(BasicActionFilter))]
     public class OfficeController : Controller
     {
         private readonly IOfficeService _officeService;

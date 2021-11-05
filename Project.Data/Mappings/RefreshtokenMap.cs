@@ -1,4 +1,5 @@
-﻿using AnthillCommon.Services.Contracts.Models;
+﻿using AnthillCommon.Models;
+using AnthillCommon.Services.Contracts.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

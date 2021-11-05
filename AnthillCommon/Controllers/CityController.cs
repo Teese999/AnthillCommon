@@ -10,12 +10,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AnthillComon.Common.Enums;
+using AnthillCommon.Services.ValidationFilters;
 
 namespace AnthillCommon.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    //[ServiceFilter(typeof(BasicActionFilter))]
     public class CityController : Controller
     {
         private readonly ICityService _cityService;

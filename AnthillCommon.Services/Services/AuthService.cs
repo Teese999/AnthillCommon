@@ -10,7 +10,6 @@ using AnthillComon.Common.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Project.Contracts;
 using Project.Data;
-using Project.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,6 +28,7 @@ namespace AnthillCommon.Services.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnityContainer _container;
         private readonly IAccountRepository _accountRepo;
+        private readonly ISubscriptionRepository _subscritiontRepo;
         private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly TokenValidationParameters _tokenValidationParams;
 
@@ -39,6 +39,7 @@ namespace AnthillCommon.Services.Services
             _settings = settings;
             _refreshTokenRepo = _container.Resolve<IRefreshTokenRepository>();
             _accountRepo = _container.Resolve<IAccountRepository>();
+            _subscritiontRepo = _container.Resolve<ISubscriptionRepository>();
             _tokenValidationParams = tokenValidationParams;
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
@@ -62,9 +63,9 @@ namespace AnthillCommon.Services.Services
 
                 return new AccessTokenResult { error_message = "User already exists" };
             }
-            var account = new Account(login, nickName, _passwordHasher.Hash(password), role);
+            var subscription = await _subscritiontRepo.GetBySequrity(SubscriptionSequrity.Basic);
+            var account = new Account(login, nickName, _passwordHasher.Hash(password), role, DateTime.UtcNow, subscription.Id);
 
-            //Add account
             await _accountRepo.Add(account);
 
             return await GenerateJwtToken(account);
@@ -89,7 +90,7 @@ namespace AnthillCommon.Services.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
-
+            var subscriprion = await _subscritiontRepo.GetByKey(account.SubscriptionPlanId);
 
             var refreshToken = new RefreshToken()
             {
@@ -100,7 +101,18 @@ namespace AnthillCommon.Services.Services
 
             };
             await _refreshTokenRepo.Add(refreshToken);
-            var result = new AccessTokenResult { access_token = accessToken, grant_type = "password", expires_in = _settings.LIFETIME, role = account.Role.ToString(), refresh_token = refreshToken.Token };
+            var result = new AccessTokenResult
+            {
+                access_token = accessToken,
+                grant_type = "password",
+                expires_in = _settings.LIFETIME,
+                role = account.Role.ToString(),
+                refresh_token = refreshToken.Token,
+                subscription_plan = subscriprion.Name,
+                subscription_version = account.SubscriptionVersion.ToString(),
+                IsPaid = account.IsPaid.ToString(),
+                time_ramain = (account.SubscriptionStartDate.AddDays((int)account.SubscriptionVersion) - DateTime.Now).ToString()
+            };
             return result;
         }
 
@@ -153,7 +165,7 @@ namespace AnthillCommon.Services.Services
             _refreshTokenRepo.Update(storedToken);
 
             // Generate a new token
-            var account =  new CommonContext().Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
+            var account = new CommonContext().Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
             return await GenerateJwtToken(account);
 
 

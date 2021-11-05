@@ -9,7 +9,5 @@ namespace AnthillCommon.Models
     {
         
         int Id { get; set; }
-        DateTime CreateDate { get; set; }
-        DateTime UpdateTime { get; set; }
     }
 }

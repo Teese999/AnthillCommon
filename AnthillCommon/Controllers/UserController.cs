@@ -2,6 +2,7 @@
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
+using AnthillCommon.Services.ValidationFilters;
 using AnthillComon.Common.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,8 @@ namespace AnthillCommon.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [BasicActionFilter(SubscriptionSequrity.Basic)]
+
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -24,7 +27,6 @@ namespace AnthillCommon.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             if (id <= 0)
@@ -36,7 +38,6 @@ namespace AnthillCommon.Controllers
             return Ok(user);
         }
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get([FromBody] PaginationSettingsModel pagginationSettings)
         {
             if (pagginationSettings == null)

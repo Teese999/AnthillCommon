@@ -15,9 +15,16 @@ namespace AnthillCommon.Models
         public string grant_type { get; set; }
         [JsonProperty("expires_in")]
         public int? expires_in { get; set; }
-        [JsonProperty("error_message")]
-        public string role { get; set; }
         [JsonProperty("role")]
+        public string role { get; set; }
+        [JsonProperty("subscription_plan")]
+        public string subscription_plan { get; set; }
+        [JsonProperty("subscription_version")]
+        public string subscription_version { get; set; }
+        [JsonProperty("IsPaid")]
+        public string IsPaid { get; set; }
+        [JsonProperty("time_ramain")]
+        public string time_ramain { get; set; }
         public string error_message { get; set; }
     }
 }

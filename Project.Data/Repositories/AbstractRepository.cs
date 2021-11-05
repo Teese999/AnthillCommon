@@ -1,6 +1,5 @@
 ﻿using AnthillCommon.Models;
 using AnthillCommon.DataContext;
-
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace AnthillCommon.Repositories
     public abstract class AbstractRepository<TEntity>
         where TEntity : class, IEntity 
     {
-        protected AbstractRepository(CommonContext context)
+       protected AbstractRepository(CommonContext context)
         {
             Context = context;
         }
@@ -47,7 +46,6 @@ namespace AnthillCommon.Repositories
         public async Task<IEnumerable<TEntity>> GetAll()
         {
 
-            Context.Set<TEntity>().ToArray();
             return await Context.Set<TEntity>().ToArrayAsync();
         }
 

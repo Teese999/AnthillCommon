@@ -1,5 +1,6 @@
 ﻿using AnthillCommon.Contracts;
-using Project.Data.Models;
+using AnthillCommon.Models;
+using AnthillComon.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace AnthillCommon.Contracts
 {
-    public interface IAccountRepository
+    public interface IAccountRepository : IEntityRepository<Account>
     {
         Task<Account> GetByLogin(string login);
-        Task<Account> Get(int id);
-        Task<Account> Add(Account entity);
+        Task<string> GetSubscriptionPlanName(Account account);
+        Task<string> GetSubscriptionPlanName(int id);
+        Task<SubscriptionSequrity> GetSqurity(int id);
     }
 }

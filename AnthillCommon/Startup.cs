@@ -24,6 +24,9 @@ using AnthillCommon.Services.Mappers;
 using AnthilCommon.Common.Services;
 using AnthillCommon.Mappings;
 using Microsoft.EntityFrameworkCore;
+using AnthillCommon.Services.ValidationFilters;
+using AnthillComon.Common.Enums;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AnthillCommon
 {
@@ -63,7 +66,12 @@ namespace AnthillCommon
                 RequireExpirationTime = false,
                 ClockSkew = TimeSpan.Zero
             };
+
             services.AddSingleton(tokenValidationParams);
+
+            services.AddSingleton<BasicActionFilter>();
+            services.AddScoped<BasicActionFilter>();
+
             ///JWT
             services.AddAuthentication(x =>
             {
@@ -81,9 +89,17 @@ namespace AnthillCommon
 
             services.AddAuthorization();
 
-            services.AddAutoMapper(new Type[] { typeof(CityMapperProfile), typeof(UserMapperProfile), typeof(OfficeMapperProfile), typeof(OrganizationMapperProfile), typeof(PaginationModel) } );
+            services.AddAutoMapper(new Type[] { 
+                typeof(CityMapperProfile),
+                typeof(UserMapperProfile),
+                typeof(OfficeMapperProfile),
+                typeof(OrganizationMapperProfile),
+                typeof(SubscriptionMapperProfile),
+                typeof(AccountMapperProfile),
+                typeof(PaginationModel) 
+            });
             services.AddAutoMapper(new Type[] { typeof(CityModelMapper), typeof(UserModelMapper), typeof(OfficeModelMapper), typeof(OrganizationModelMapper) });
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

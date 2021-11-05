@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Unity;
 using System.IO;
 using AnthillCommon.Models;
-using Project.Data.Models;
+using AnthillComon.Common.Enums;
 
 namespace AnthillCommon.DataContext
 {
@@ -35,6 +35,7 @@ namespace AnthillCommon.DataContext
             modelBuilder.ApplyConfiguration(new CityMap());
             modelBuilder.ApplyConfiguration(new AccountMap());
             modelBuilder.ApplyConfiguration(new RefreshtokenMap());
+            modelBuilder.ApplyConfiguration(new SubscriptionMap());
 
             var users = new List<User>();
             var organizations = new List<Organization>();
@@ -111,6 +112,7 @@ namespace AnthillCommon.DataContext
             modelBuilder.Entity<Organization>().HasData(organizations);
             modelBuilder.Entity<Office>().HasData(offices);
             modelBuilder.Entity<City>().HasData(cities);
+            modelBuilder.Entity<Subscription>().HasData(new Subscription() {Id = 1, Cost = 0, Name = "Basic", SubscriptionSequrity = SubscriptionSequrity.Basic});
         }
         
         

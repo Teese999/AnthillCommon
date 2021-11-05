@@ -1,7 +1,8 @@
 ﻿using AnthillCommon.Contracts;
 using AnthillCommon.DataContext;
+using AnthillCommon.Models;
+using AnthillComon.Common.Enums;
 using Microsoft.EntityFrameworkCore;
-using Project.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace AnthillCommon.Repositories
 
         public async Task<Account> Get(int id)
         {
-
-            var account = await  GetByKey(id);
+            var account = await GetByKey(id);
+            await CheckSubscription(account);
             return account;
         }
 
@@ -29,14 +30,66 @@ namespace AnthillCommon.Repositories
         {
 
             var account = await GetQuery(x => x.Login == login).FirstOrDefaultAsync();
+            if (account != null) { await CheckSubscription(account); }
 
             return account;
         }
 
-        async Task<Account>  IAccountRepository.Add(Account entity)
+        public async Task<Account> AddAccount(Account account)
         {
-            await Add(entity);
-            return entity;
+            await CheckSubscription(account);
+            await Add(account);
+            return account;
         }
+
+        private async Task CheckSubscription(Account account)
+        {
+            if (account == null)
+            {
+                return;
+            }
+            await Task.Run(() =>
+             {
+                 if (account.SubscriptionStartDate.AddDays((int)account.SubscriptionVersion) > DateTime.Now)
+                 {
+                     account.IsPaid = true;
+                     return;
+                 }
+                 account.IsPaid = false;
+             });
+
+        }
+        public async Task<string> GetSubscriptionPlanName(Account account)
+        {
+            var subscriptionRepo = new SubscriptionRepository(Context);
+            var subscriptipon = await subscriptionRepo.GetByKey(account.SubscriptionPlanId);
+
+            return subscriptipon.Name;
+
+        }
+        public async Task<string> GetSubscriptionPlanName(int id)
+        {
+            var account = await Get(id);
+
+            var subscriptionRepo = new SubscriptionRepository(Context);
+            var subscriptipon = await subscriptionRepo.GetByKey(account.SubscriptionPlanId);
+
+            return subscriptipon.Name;
+
+        }
+        public async Task<SubscriptionSequrity> GetSqurity(int id)
+        {
+            var account = await Get(id);
+            var subscriptionRepo = new SubscriptionRepository(Context);
+            var subscriptipon = await subscriptionRepo.GetByKey(account.SubscriptionPlanId);
+
+            return subscriptipon.SubscriptionSequrity;
+        }
+
+        //public Task<IEnumerable<Account>> Get()
+        //{
+        //    var accounts = GetAll();
+        //    return accounts;
+        //}
     }
 }

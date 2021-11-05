@@ -23,7 +23,8 @@ namespace AnthillCommon.Services
             container.RegisterType<ICityService, CityService>(new TLifetime());
             container.RegisterType<IOrganizationService, OrganizationService>(new TLifetime());
             container.RegisterType<IAuthService, AuthService>(new TLifetime());
-             
+            container.RegisterType<ISubscriptionService, SubscriptionService>(new TLifetime());
+            container.RegisterType<IAccountService, AccountService>(new TLifetime());
             container.RegisterType<IPasswordHasher, PasswordHasher>();
 
 
