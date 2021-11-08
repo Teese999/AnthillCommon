@@ -50,6 +50,7 @@ namespace AnthillCommon.Services.Services
         public async Task<IEnumerable<Subscription>> Get()
         {
             var _repo = _container.Resolve<ISubscriptionRepository>();
+            //osipenkom: можно превратить GetMany условно в GetAll, сделав аргумент criteria = null по умолчанию. таким образом можно избавиться от лишней и бессмысленной лямбды (x => x == x)
             var subscriptions = await _repo.GetMany(x => x == x);
             return subscriptions;
         }

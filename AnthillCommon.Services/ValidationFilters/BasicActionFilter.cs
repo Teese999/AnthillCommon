@@ -16,6 +16,7 @@ namespace AnthillCommon.Services.ValidationFilters
     {
         private readonly CommonContext _context = new CommonContext();
         private AccountRepository _accountRepo;
+        //osipenkom: публичное поле именуется без "_" и с большой буквы
         public SubscriptionSequrity _controllerSequrity;
         public BasicActionFilter(SubscriptionSequrity sequrity)
         {

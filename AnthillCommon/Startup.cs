@@ -69,6 +69,7 @@ namespace AnthillCommon
 
             services.AddSingleton(tokenValidationParams);
 
+            //osipenkom: так не будет работать, либо Singleton, либо Scoped. вообще не совсем понятно, зачем добавлять фильтр в контейнер, если ты не пользуешься контейнером в этом фильтре
             services.AddSingleton<BasicActionFilter>();
             services.AddScoped<BasicActionFilter>();
 

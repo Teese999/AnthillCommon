@@ -42,6 +42,7 @@ namespace AnthillCommon.Repositories
             return account;
         }
 
+        //osipenkom: этому методу скорее место в профильном репозитории
         private async Task CheckSubscription(Account account)
         {
             if (account == null)
@@ -59,6 +60,7 @@ namespace AnthillCommon.Repositories
              });
 
         }
+        //osipenkom: метод нигде не используется
         public async Task<string> GetSubscriptionPlanName(Account account)
         {
             var subscriptionRepo = new SubscriptionRepository(Context);
@@ -67,6 +69,7 @@ namespace AnthillCommon.Repositories
             return subscriptipon.Name;
 
         }
+        //osipenkom: метод нигде не используется
         public async Task<string> GetSubscriptionPlanName(int id)
         {
             var account = await Get(id);
@@ -77,8 +80,11 @@ namespace AnthillCommon.Repositories
             return subscriptipon.Name;
 
         }
+        //osipenkom: опечатки
         public async Task<SubscriptionSequrity> GetSqurity(int id)
         {
+            //osipenkom: можно добавить навигационное свойство SubscriptionPlan в сущность Account и не делать второй запрос в бд.
+            //тогда этот метод (GetSqurity) вообще не нужен будет, так как при запросе Account можно будет сразу получить прилинкованную подписку
             var account = await Get(id);
             var subscriptionRepo = new SubscriptionRepository(Context);
             var subscriptipon = await subscriptionRepo.GetByKey(account.SubscriptionPlanId);

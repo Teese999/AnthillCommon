@@ -28,6 +28,7 @@ namespace AnthillCommon.Services.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnityContainer _container;
         private readonly IAccountRepository _accountRepo;
+        //osipenkom: много опечаток в одном слове
         private readonly ISubscriptionRepository _subscritiontRepo;
         private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly TokenValidationParameters _tokenValidationParams;
@@ -164,6 +165,7 @@ namespace AnthillCommon.Services.Services
 
             _refreshTokenRepo.Update(storedToken);
 
+            //osipenkom: почему не через, специально для этого созданный, репозиторий?
             // Generate a new token
             var account = new CommonContext().Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
             return await GenerateJwtToken(account);
