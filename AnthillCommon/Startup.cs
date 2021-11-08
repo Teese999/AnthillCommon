@@ -69,9 +69,6 @@ namespace AnthillCommon
 
             services.AddSingleton(tokenValidationParams);
 
-            //osipenkom: так не будет работать, либо Singleton, либо Scoped. вообще не совсем понятно, зачем добавлять фильтр в контейнер, если ты не пользуешься контейнером в этом фильтре
-            services.AddSingleton<BasicActionFilter>();
-            services.AddScoped<BasicActionFilter>();
 
             ///JWT
             services.AddAuthentication(x =>
@@ -97,7 +94,8 @@ namespace AnthillCommon
                 typeof(OrganizationMapperProfile),
                 typeof(SubscriptionMapperProfile),
                 typeof(AccountMapperProfile),
-                typeof(PaginationModel) 
+                typeof(PaginationModel),
+                typeof(SubscriptionMapperProfile)
             });
             services.AddAutoMapper(new Type[] { typeof(CityModelMapper), typeof(UserModelMapper), typeof(OfficeModelMapper), typeof(OrganizationModelMapper) });
 

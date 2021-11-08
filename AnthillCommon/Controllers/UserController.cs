@@ -14,7 +14,7 @@ namespace AnthillCommon.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [BasicActionFilter(SubscriptionSequrity.Basic)]
+    [BasicActionFilter(SubscriptionType.Basic)]
 
     public class UserController : Controller
     {

@@ -29,6 +29,8 @@ namespace Project.Data
             container.RegisterType<IAccountRepository, AccountRepository>(new TLifetime());
             container.RegisterType<IRefreshTokenRepository, RefreshTokenRepository>(new TLifetime());
             container.RegisterType<ISubscriptionRepository, SubscriptionRepository>(new TLifetime());
+            container.RegisterType<ISubscriptionVersionRepository, SubscriptionVersionRepository>(new TLifetime());
+            
         }
     }
 }

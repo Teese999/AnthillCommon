@@ -20,7 +20,7 @@ namespace AnthillCommon.Models
         [JsonProperty("subscription_plan")]
         public string subscription_plan { get; set; }
         [JsonProperty("subscription_version")]
-        public string subscription_version { get; set; }
+        public string subscription_version_id { get; set; }
         [JsonProperty("IsPaid")]
         public string IsPaid { get; set; }
         [JsonProperty("time_ramain")]

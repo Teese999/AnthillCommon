@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnthillCommon.Contracts;
 
 namespace AnthillCommon.Repositories
 {
@@ -18,10 +19,29 @@ namespace AnthillCommon.Repositories
         {
         }
 
-        public async Task<Subscription> GetBySequrity(SubscriptionSequrity sequrity)
+        public async Task<Subscription> GetBySequrity(SubscriptionType type)
         {
-            var subscription = await Context.Set<Subscription>().FirstOrDefaultAsync(x => x.SubscriptionSequrity == sequrity);
+            var subscription = await Context.Set<Subscription>().FirstOrDefaultAsync(x => x.SubscriptionType == type);
             return subscription;
+        }
+        public async Task CheckSubscription(Account account)
+        {
+            var subscriptionVersion = await Context.Set<SubscriptionVersion>().FirstOrDefaultAsync(x => x.Id == account.SubscriptionVersionId);
+            var duration = subscriptionVersion.Duration;
+            if (account == null)
+            {
+                return;
+            }
+            await Task.Run(() =>
+            {
+                if (account.SubscriptionStartDate.AddDays(duration) > DateTime.Now)
+                {
+                    account.IsPaid = true;
+                    return;
+                }
+                account.IsPaid = false;
+            });
+
         }
     }
 }

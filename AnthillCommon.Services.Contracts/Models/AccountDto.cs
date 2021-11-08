@@ -10,7 +10,7 @@ namespace AnthillCommon.Services.Contracts.Models
         public int Id { get; set; }
         public string NickName { get; set; }
         public Role Role { get; set; }
-        public SubscriptionVersion SubscriptionVersion { get; set; }
+        public int SubscriptionVersionId { get; set; }
         public int SubscriptionPlanId { get; set; }
     }
 }

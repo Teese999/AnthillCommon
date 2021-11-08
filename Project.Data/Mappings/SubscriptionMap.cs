@@ -15,7 +15,7 @@ namespace AnthillCommon.Mapping
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Cost).IsRequired(true);
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
-            builder.Property(x => x.SubscriptionSequrity).IsRequired();
+            builder.Property(x => x.SubscriptionType).IsRequired();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AnthilCommon.Common.Services;
+using AnthillCommon.Contracts;
 using AnthillCommon.Models;
 using AnthillCommon.Services.Contracts.Services;
 using AnthillComon.Common.Enums;
@@ -50,8 +51,7 @@ namespace AnthillCommon.Services.Services
         public async Task<IEnumerable<Subscription>> Get()
         {
             var _repo = _container.Resolve<ISubscriptionRepository>();
-            //osipenkom: можно превратить GetMany условно в GetAll, сделав аргумент criteria = null по умолчанию. таким образом можно избавиться от лишней и бессмысленной лямбды (x => x == x)
-            var subscriptions = await _repo.GetMany(x => x == x);
+            var subscriptions = await _repo.GetAll();
             return subscriptions;
         }
 

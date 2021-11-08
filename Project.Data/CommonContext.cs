@@ -36,6 +36,9 @@ namespace AnthillCommon.DataContext
             modelBuilder.ApplyConfiguration(new AccountMap());
             modelBuilder.ApplyConfiguration(new RefreshtokenMap());
             modelBuilder.ApplyConfiguration(new SubscriptionMap());
+            modelBuilder.ApplyConfiguration(new SubscriptionVersionMap());
+            
+
 
             var users = new List<User>();
             var organizations = new List<Organization>();
@@ -112,7 +115,8 @@ namespace AnthillCommon.DataContext
             modelBuilder.Entity<Organization>().HasData(organizations);
             modelBuilder.Entity<Office>().HasData(offices);
             modelBuilder.Entity<City>().HasData(cities);
-            modelBuilder.Entity<Subscription>().HasData(new Subscription() {Id = 1, Cost = 0, Name = "Basic", SubscriptionSequrity = SubscriptionSequrity.Basic});
+            modelBuilder.Entity<Subscription>().HasData(new Subscription() {Id = 1, Cost = 0, Name = "Basic", SubscriptionType = SubscriptionType.Basic});
+            modelBuilder.Entity<SubscriptionVersion>().HasData(new SubscriptionVersion() { Id = 1, Duration = 14, Name = "Trial" });
         }
         
         

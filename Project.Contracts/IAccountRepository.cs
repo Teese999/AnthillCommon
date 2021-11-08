@@ -11,8 +11,5 @@ namespace AnthillCommon.Contracts
     public interface IAccountRepository : IEntityRepository<Account>
     {
         Task<Account> GetByLogin(string login);
-        Task<string> GetSubscriptionPlanName(Account account);
-        Task<string> GetSubscriptionPlanName(int id);
-        Task<SubscriptionSequrity> GetSqurity(int id);
     }
 }

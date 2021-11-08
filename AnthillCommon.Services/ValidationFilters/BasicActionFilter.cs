@@ -16,11 +16,11 @@ namespace AnthillCommon.Services.ValidationFilters
     {
         private readonly CommonContext _context = new CommonContext();
         private AccountRepository _accountRepo;
-        //osipenkom: публичное поле именуется без "_" и с большой буквы
-        public SubscriptionSequrity _controllerSequrity;
-        public BasicActionFilter(SubscriptionSequrity sequrity)
+        private SubscriptionVersionRepository _subscriptionVersionRepo;
+        private readonly SubscriptionType _controllerSequrity;
+        public BasicActionFilter(SubscriptionType type)
         {
-            _controllerSequrity = sequrity;
+            _controllerSequrity = type;
 
         }
 
@@ -30,18 +30,21 @@ namespace AnthillCommon.Services.ValidationFilters
         async void IResultFilter.OnResultExecuting(ResultExecutingContext context)
         {
             _accountRepo = new AccountRepository(_context);
+            _subscriptionVersionRepo = new SubscriptionVersionRepository(_context);
+
             var id = int.Parse(context.HttpContext.User.FindFirst("id")?.Value);
             var account =  _accountRepo.Get(id).Result; //BUG??
+            var accountSubscription = await _subscriptionVersionRepo.GetByKey(account.SubscriptionVersionId);
 
 
-            var userSequrity = _accountRepo.GetSqurity(account.Id).Result; //BUG??
+            var userSequrity = account.SubscriptionType; //BUG??
 
             if ((int)userSequrity < (int)_controllerSequrity)
             {
                 context.Result = new BadRequestObjectResult("You do not allowed for it");
                 return;
             }
-            if (account.SubscriptionVersion == SubscriptionVersion.Trial && !account.IsPaid)
+            if (accountSubscription.Name == "Trial" && !account.IsPaid)
             {
 
                 context.Result = new BadRequestObjectResult("Your trial version has been expired");

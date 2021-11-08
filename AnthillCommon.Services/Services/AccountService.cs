@@ -71,14 +71,14 @@ namespace AnthillCommon.Services.Services
             {           
                 if (Enum.IsDefined(typeof(SubscriptionVersion), newId))
                 {
-                    accountUpdated.SubscriptionVersion = (SubscriptionVersion)newId;
+                    accountUpdated.SubscriptionVersionId = newId;
                 }
             });
             Action planChange = new Action(() =>
             {
-                if (Enum.IsDefined(typeof(SubscriptionSequrity), newId))
+                if (Enum.IsDefined(typeof(SubscriptionType), newId))
                 {
-                    accountUpdated.SubscriptionPlanId = newId;
+                    accountUpdated.SubscriptionType = (SubscriptionType)newId;
                 }
 
             });

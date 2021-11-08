@@ -7,18 +7,17 @@ namespace AnthillCommon.Models
 {
     public class Account : IEntity
     {
-        public Account(string login, string nickName, string password, Role role, DateTime subscriptionStartDate, int subscriptionPlanId = 0, SubscriptionVersion subscriptionVersion = SubscriptionVersion.Trial)
+        public Account(string login, string nickName, string password, Role role, DateTime subscriptionStartDate, int subscriptionVersionId = 1, SubscriptionType subscriptionType = SubscriptionType.Basic)
         {
             Login = login;
             NickName = nickName;
             Password = password;
             Role = role;
-            SubscriptionPlanId = subscriptionPlanId;
-            SubscriptionVersion = subscriptionVersion;
+            SubscriptionVersionId = subscriptionVersionId;
             SubscriptionStartDate = subscriptionStartDate;
+            SubscriptionType = subscriptionType;
             CreateDate = DateTime.Now;
             UpdateTime = DateTime.Now;
-
         }
         public int Id { get; set; }
         public string Login { get; set; }
@@ -27,8 +26,8 @@ namespace AnthillCommon.Models
         public DateTime CreateDate { get; set; }
         public DateTime UpdateTime { get; set; }
         public Role Role { get; set; }
-        public SubscriptionVersion SubscriptionVersion { get; set; }
-        public int SubscriptionPlanId { get; set; }
+        public int SubscriptionVersionId { get; set; }
+        public SubscriptionType SubscriptionType { get; set; }
         public bool IsPaid { get; set; }
         public DateTime SubscriptionStartDate { get; set; }
     }

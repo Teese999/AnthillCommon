@@ -28,9 +28,9 @@ namespace AnthillCommon.Services.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnityContainer _container;
         private readonly IAccountRepository _accountRepo;
-        //osipenkom: много опечаток в одном слове
-        private readonly ISubscriptionRepository _subscritiontRepo;
+        private readonly ISubscriptionRepository _subscriptionRepo;
         private readonly IRefreshTokenRepository _refreshTokenRepo;
+        private readonly ISubscriptionVersionRepository _subscriptionVersionRepo;
         private readonly TokenValidationParameters _tokenValidationParams;
 
         public AuthService(IUnityContainer container, IPasswordHasher passwordHasher, Settings settings, TokenValidationParameters tokenValidationParams) : base(container)
@@ -40,7 +40,8 @@ namespace AnthillCommon.Services.Services
             _settings = settings;
             _refreshTokenRepo = _container.Resolve<IRefreshTokenRepository>();
             _accountRepo = _container.Resolve<IAccountRepository>();
-            _subscritiontRepo = _container.Resolve<ISubscriptionRepository>();
+            _subscriptionRepo = _container.Resolve<ISubscriptionRepository>();
+            _subscriptionVersionRepo = _container.Resolve<ISubscriptionVersionRepository>();
             _tokenValidationParams = tokenValidationParams;
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
@@ -64,8 +65,8 @@ namespace AnthillCommon.Services.Services
 
                 return new AccessTokenResult { error_message = "User already exists" };
             }
-            var subscription = await _subscritiontRepo.GetBySequrity(SubscriptionSequrity.Basic);
-            var account = new Account(login, nickName, _passwordHasher.Hash(password), role, DateTime.UtcNow, subscription.Id);
+            var subscription = await _subscriptionRepo.GetBySequrity(SubscriptionType.Basic);
+            var account = new Account(login, nickName, _passwordHasher.Hash(password), role, DateTime.UtcNow, subscription.Id, SubscriptionType.Basic);
 
             await _accountRepo.Add(account);
 
@@ -91,7 +92,7 @@ namespace AnthillCommon.Services.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
-            var subscriprion = await _subscritiontRepo.GetByKey(account.SubscriptionPlanId);
+            var subscriprion = await _subscriptionRepo.GetByKey((int)account.SubscriptionType);
 
             var refreshToken = new RefreshToken()
             {
@@ -109,10 +110,10 @@ namespace AnthillCommon.Services.Services
                 expires_in = _settings.LIFETIME,
                 role = account.Role.ToString(),
                 refresh_token = refreshToken.Token,
-                subscription_plan = subscriprion.Name,
-                subscription_version = account.SubscriptionVersion.ToString(),
+                subscription_plan = subscriprion.Name.ToString(),
+                subscription_version_id = account.SubscriptionVersionId.ToString(),
                 IsPaid = account.IsPaid.ToString(),
-                time_ramain = (account.SubscriptionStartDate.AddDays((int)account.SubscriptionVersion) - DateTime.Now).ToString()
+                time_ramain = await _subscriptionVersionRepo.TimeRemaining(account.Id),
             };
             return result;
         }
@@ -165,9 +166,9 @@ namespace AnthillCommon.Services.Services
 
             _refreshTokenRepo.Update(storedToken);
 
-            //osipenkom: почему не через, специально для этого созданный, репозиторий?
             // Generate a new token
-            var account = new CommonContext().Set<Account>().FirstOrDefault(x => x.Id == storedToken.AccountId);
+
+            var account = await  _accountRepo.GetByKey(storedToken.AccountId);
             return await GenerateJwtToken(account);
 
 

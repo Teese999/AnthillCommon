@@ -21,7 +21,8 @@ namespace AnthillCommon.Mapping
             builder.Property(x => x.Role).IsRequired(true);
             builder.Property(x => x.IsPaid).IsRequired(true);
             builder.Property(x => x.SubscriptionStartDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();
-            builder.Property(x => x.SubscriptionVersion).IsRequired(true);
+            builder.Property(x => x.SubscriptionVersionId).IsRequired(true);
+            builder.Property(x => x.SubscriptionType).IsRequired(true);
         }
     }
 }
