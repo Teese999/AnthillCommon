@@ -34,10 +34,10 @@ namespace AnthillCommon.Services.ValidationFilters
 
             var id = int.Parse(context.HttpContext.User.FindFirst("id")?.Value);
             var account =  _accountRepo.Get(id).Result; //BUG??
-            var accountSubscription = await _subscriptionVersionRepo.GetByKey(account.SubscriptionVersionId);
+            var accountSubscription = _subscriptionVersionRepo.GetByKey(account.SubscriptionVersionId).Result; //BUG;
 
 
-            var userSequrity = account.SubscriptionType; //BUG??
+            var userSequrity = account.SubscriptionType;
 
             if ((int)userSequrity < (int)_controllerSequrity)
             {
