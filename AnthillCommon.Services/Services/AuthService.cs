@@ -31,6 +31,7 @@ namespace AnthillCommon.Services.Services
         private readonly ISubscriptionRepository _subscriptionRepo;
         private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly ISubscriptionVersionRepository _subscriptionVersionRepo;
+        private readonly IOrganizationRepository _organisationRepo;
         private readonly TokenValidationParameters _tokenValidationParams;
 
         public AuthService(IUnityContainer container, IPasswordHasher passwordHasher, Settings settings, TokenValidationParameters tokenValidationParams) : base(container)
@@ -42,6 +43,7 @@ namespace AnthillCommon.Services.Services
             _accountRepo = _container.Resolve<IAccountRepository>();
             _subscriptionRepo = _container.Resolve<ISubscriptionRepository>();
             _subscriptionVersionRepo = _container.Resolve<ISubscriptionVersionRepository>();
+            _organisationRepo = _container.Resolve<IOrganizationRepository>();
             _tokenValidationParams = tokenValidationParams;
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
@@ -57,14 +59,14 @@ namespace AnthillCommon.Services.Services
             return await jwtToken;
         }
 
-        public async Task<AccessTokenResult> Signup(string login, string nickName, string password, Role role)
+        public async Task<AccessTokenResult> Signup(string login, string nickName, string password, Role role, int? OrganisationId = null)
         {
             if (await _accountRepo.GetByLogin(login) != null)
             {
 
                 return new AccessTokenResult { error_message = "User already exists" };
             }
-            var subscription = await _subscriptionRepo.GetByType(SubscriptionType.Basic);
+            var subscription = await _subscriptionRepo.GetByAccessLevel(AccessLevel.Basic);
             var subscriptionVersion = await _subscriptionVersionRepo.GetByName("Trial");
             var account = new Account()
             {
@@ -78,6 +80,16 @@ namespace AnthillCommon.Services.Services
                 SubscriptionId = subscription.Id,
                 SubscriptionVersionId = subscriptionVersion.Id,
             };
+            if (OrganisationId == null)
+            {
+                await _organisationRepo.Add(new Organization() { Name = $"{nickName}_organisation", CreateDate = DateTime.UtcNow, UpdateTime = DateTime.UtcNow });
+                var organisation = await _organisationRepo.GetSingle(x => x.Name == $"{nickName}_organisation");
+                account.OrganisationId = organisation.Id;
+            }
+            else
+            {
+                account.OrganisationId = OrganisationId;
+            }
             await _accountRepo.Add(account);
             account.Subscription = subscription;
             account.SubscriptionVersion = subscriptionVersion;
@@ -98,6 +110,7 @@ namespace AnthillCommon.Services.Services
                     new Claim("Id", account.Id.ToString()),
                     new Claim("Login", account.Login),
                     new Claim(ClaimTypes.Role, account.Role.ToString()),
+                    new Claim("Organisation id", account.OrganisationId.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddHours(_settings.LIFETIME),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -128,6 +141,7 @@ namespace AnthillCommon.Services.Services
                 subscription_version_id = account.SubscriptionVersionId.ToString(),
                 IsPaid = account.IsPaid.ToString(),
                 time_ramain = await _subscriptionVersionRepo.TimeRemaining(account.Id),
+                organisation_id = account.OrganisationId
             };
             return result;
         }

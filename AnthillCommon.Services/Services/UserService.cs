@@ -7,6 +7,7 @@ using AnthillCommon.Services.Contracts.Models;
 using AnthillCommon.Services.Contracts.Services;
 using AnthillCommon.Services.Mappers;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +31,28 @@ namespace AnthillCommon.Services.Services
             var _repo = _container.Resolve<IUserRepository>();
             var addeduser = AutoMapper.Map<User>(user);
             await _repo.Add(addeduser);
+        }
+
+        public async Task<IActionResult> Add(UserDto user, int accountId)
+        {
+            var accountRepo = Container.Resolve<IAccountRepository>();
+            var account = await accountRepo.GetByKey(accountId);
+
+            var accountOrganisationId = account.OrganisationId;
+
+            var officeRepo = Container.Resolve<IOfficeRepository>();
+            var office = await officeRepo.GetByKey(user.OfficeId);
+            var officeOrganisationId = office.OrganizationId;
+
+            if (accountOrganisationId == officeOrganisationId)
+            {
+                await Add(user);
+                return new OkResult();
+            }
+            else
+            {
+                return new BadRequestObjectResult("You have no permissions to add user to this Organisation");
+            }
         }
 
         public async Task Delete(int id)

@@ -25,7 +25,7 @@ namespace AnthillCommon.Controllers
         [Route("signup")]
         public async Task<IActionResult> Signup([FromBody] SignupModel model)
         {
-            var token = await _authService.Signup(model.Login, model.NickName, model.Password, model.Role);
+            var token = await _authService.Signup(model.Login, model.NickName, model.Password, model.Role, model.OrganisationId);
             return Ok(token);
         }
         [HttpPost]

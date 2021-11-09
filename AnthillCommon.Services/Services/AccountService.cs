@@ -21,45 +21,7 @@ namespace AnthillCommon.Services.Services
         {
             _container = container;
         }
-        //public async Task<AccountDto> ChangeSubscriptionPlan(int accountId, int subscriptionTypeId)
-        //{
-        //    var _repo = _container.Resolve<IAccountRepository>();
-        //    var account = await _repo.GetByKey(accountId);
-        //    var accountUpdated = account;
 
-        //    if (account == null) { return null; }
-
-        //    if (Enum.IsDefined(typeof(SubscriptionType), subscriptionTypeId))
-        //    {
-        //        accountUpdated.SubscriptionPlanId = subscriptionTypeId;
-        //    }
-
-        //    accountUpdated.SubscriptionStartDate = DateTime.UtcNow;
-
-
-        //    await _repo.Update(account, accountUpdated);
-        //    return AutoMapper.Map<AccountDto>(await _repo.GetByKey(accountId));
-        //}
-
-        //public async Task<AccountDto> ChangeSubscriptionVersion(int accountId, int SubscriptionVersionId)
-        //{
-        //    var _repo = _container.Resolve<IAccountRepository>();
-        //    var account = await _repo.GetByKey(accountId);
-        //    var accountUpdated = account;
-
-
-        //    if (account == null) { return null; }
-        //    if (Enum.IsDefined(typeof(SubscriptionVersion), SubscriptionVersionId))
-        //    {
-        //        accountUpdated.SubscriptionVersion = (SubscriptionVersion)SubscriptionVersionId;
-        //    }
-
-        //    accountUpdated.SubscriptionStartDate = DateTime.UtcNow;
-
-        //    await _repo.Update(account, accountUpdated);
-
-        //    return AutoMapper.Map<AccountDto>(await _repo.GetByKey(accountId));
-        //}
         public async Task<AccountDto> ChangePlanAndVersion(int accountId, int newId, string actionName)
         {
 
@@ -76,7 +38,7 @@ namespace AnthillCommon.Services.Services
             });
             Action planChange = new Action(() =>
             {
-                if (Enum.IsDefined(typeof(SubscriptionType), newId))
+                if (Enum.IsDefined(typeof(AccessLevel), newId))
                 {
                     accountUpdated.SubscriptionId = newId;
                 }
@@ -124,5 +86,6 @@ namespace AnthillCommon.Services.Services
 
             await _repo.Update(updatedUAccount, existingAccount);
         }
+
     }
 }

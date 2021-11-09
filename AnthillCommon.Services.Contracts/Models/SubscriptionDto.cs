@@ -10,6 +10,6 @@ namespace AnthillCommon.Services.Contracts.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public double Cost { get; set; }
-        public SubscriptionType SubscriptionType { get; set; }
+        public AccessLevel SubscriptionType { get; set; }
     }
 }

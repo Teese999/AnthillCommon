@@ -25,6 +25,8 @@ namespace AnthillCommon.Models
         public string IsPaid { get; set; }
         [JsonProperty("time_ramain")]
         public string time_ramain { get; set; }
+        [JsonProperty("organisation_id")]
+        public int? organisation_id { get; set; }
         public string error_message { get; set; }
     }
 }

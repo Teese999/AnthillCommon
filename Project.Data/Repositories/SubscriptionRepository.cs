@@ -19,9 +19,9 @@ namespace AnthillCommon.Repositories
         {
         }
 
-        public async Task<Subscription> GetByType(SubscriptionType type)
+        public async Task<Subscription> GetByAccessLevel(AccessLevel accessLevel)
         {
-            var subscription = await Context.Set<Subscription>().FirstOrDefaultAsync(x => x.SubscriptionType == type);
+            var subscription = await Context.Set<Subscription>().FirstOrDefaultAsync(x => x.AccessLevel == accessLevel);
             return subscription;
         }
         public async Task CheckSubscription(Account account)

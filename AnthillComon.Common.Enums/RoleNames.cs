@@ -14,7 +14,6 @@ namespace AnthillComon.Common.Enums
         public const string Regular = "Regular";
     }
 
-    //[JsonConverter(typeof(StringEnumConverter))]
     public enum Role
     {
 

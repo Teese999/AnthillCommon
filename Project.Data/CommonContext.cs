@@ -57,7 +57,7 @@ namespace AnthillCommon.DataContext
                     UpdateTime = DateTime.Now
                 });
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 organizations.Add(new Organization()
                 {
@@ -68,55 +68,57 @@ namespace AnthillCommon.DataContext
                 });
             }
             int id = 1;
-            for (int i = 0; i < 5; i++)
+            foreach (var item in organizations)
             {
-
-                offices.Add(new Office()
+                for (int i = 0; i < 2; i++)
                 {
-                    Id = id,
-                    Name = $"Office_{id}",
-                    Address = $"Address_{id}",
-                    CreateDate = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                    CityId = cities[i].Id,
-                    OrganizationId = organizations[i].Id,
-                });
-                id++;
-                offices.Add(new Office()
-                {
-                    Id = id,
-                    Name = $"Office_{id}",
-                    Address = $"Address_{id}",
-                    CreateDate = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                    CityId = cities[i].Id,
-                    OrganizationId = organizations[i].Id,
-                });
-                id++;
+                    offices.Add(new Office()
+                    {
+                        Id = id,
+                        Name = $"Office_{id}",
+                        Address = $"Address_{id}",
+                        CreateDate = DateTime.Now,
+                        UpdateTime = DateTime.Now,
+                        CityId = cities[_rnd.Next(cities.Count)].Id,
+                        OrganizationId = item.Id,
+                    });
+                    id++;
+                }
             }
-            for (int i = 0; i < 100; i++)
+            int userscount = 50;
+            id = 1;
+            foreach (var organisation in organizations)
             {
-
-                users.Add(new User()
+                foreach (var office in offices.Where(x => x.OrganizationId == organisation.Id))
                 {
-                    Id = i + 1,
-                    FirstName = $"FirstName_{i}",
-                    LastName = $"LastName_{i}",
-                    Email = $"Mail_{i}",
-                    BirthDate = DateTime.Today,
-                    Gender = $"RandomGender_{i}",
-                    CreateDate = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                    IsFired = false,
-                    OfficeId = offices[_rnd.Next(offices.Count)].Id,
-                });
-
+                    for (int i = 0; i < userscount; i++)
+                    {
+                        users.Add(new User()
+                        {
+                            Id = id,
+                            FirstName = $"FirstName_{id}",
+                            LastName = $"LastName_{id}",
+                            Email = $"Mail_{id}",
+                            BirthDate = DateTime.Today,
+                            Gender = $"RandomGender_{id}",
+                            CreateDate = DateTime.Now,
+                            UpdateTime = DateTime.Now,
+                            IsFired = false,
+                            OfficeId = office.Id,
+                        });
+                        id++;
+                    }
+                }
+                userscount = userscount*10;
             }
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Organization>().HasData(organizations);
             modelBuilder.Entity<Office>().HasData(offices);
             modelBuilder.Entity<City>().HasData(cities);
-            modelBuilder.Entity<Subscription>().HasData(new Subscription() {Id = 1, Cost = 0, Name = "Basic", SubscriptionType = SubscriptionType.Basic});
+            modelBuilder.Entity<Subscription>().HasData(
+                new Subscription() {Id = 1, Cost = 0, Name = "Basic", AccessLevel = AccessLevel.Basic, MaxUsers = 100},
+                new Subscription() {Id = 2, Cost = 0, Name = "Premium", AccessLevel = AccessLevel.Premium, MaxUsers = 1000 },
+                new Subscription() { Id = 3, Cost = 0, Name = "Ultra", AccessLevel = AccessLevel.Ultra, MaxUsers = 10000 });
             modelBuilder.Entity<SubscriptionVersion>().HasData(new SubscriptionVersion() { Id = 1, Duration = 14, Name = "Trial" });
         }
         

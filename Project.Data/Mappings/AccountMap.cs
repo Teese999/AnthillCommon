@@ -23,6 +23,7 @@ namespace AnthillCommon.Mapping
             builder.Property(x => x.SubscriptionStartDate).HasMaxLength(DateTime.MaxValue.ToString().Length).IsRequired();
             builder.HasOne(x => x.Subscription).WithMany().HasForeignKey(x => x.SubscriptionId).IsRequired(false);
             builder.HasOne(x => x.SubscriptionVersion).WithMany().HasForeignKey(x => x.SubscriptionVersionId).IsRequired(false);
+            builder.Property(x => x.OrganisationId).IsRequired(false);
         }
     }
 }

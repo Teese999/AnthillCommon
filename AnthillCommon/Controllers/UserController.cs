@@ -14,8 +14,7 @@ namespace AnthillCommon.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [BasicActionFilter(SubscriptionType.Basic)]
-
+    [AccessValidationActionFilter(AccessLevel.Basic)]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -50,6 +49,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpPost]
         [Authorize(Roles = RoleNames.Administrator + "," + RoleNames.Regular)]
+        [ServiceFilter(typeof(UsersLimitActionFilter))]
         public async Task<IActionResult> Add([FromBody] UserModel user)
         {
             if (user == null)
@@ -57,8 +57,9 @@ namespace AnthillCommon.Controllers
                 return BadRequest("object is null");
             }
 
-            await _userService.Add(_mapper.Map<UserDto>(user));
-            return Ok();
+            var accountId = int.Parse(HttpContext.User.FindFirst("id")?.Value);
+            
+            return await _userService.Add(_mapper.Map<UserDto>(user), accountId);
         }
         [HttpDelete]
         [Route("{id}")]
@@ -75,6 +76,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpPut]
         [Authorize(Roles = RoleNames.Administrator)]
+        [ServiceFilter(typeof(UserUpdateBlockActionFilter))]    
         public async Task<IActionResult> Uppdate([FromBody] UserModel user)
         {
             if (user == null)

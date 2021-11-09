@@ -24,5 +24,7 @@ namespace AnthillCommon.Models
 
         [Required]
         public Role Role { get; set; }
+
+        public int? OrganisationId { get; set; }
     }
 }

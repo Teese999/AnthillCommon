@@ -16,6 +16,7 @@ namespace AnthillCommon.Models
         public Role Role { get; set; }
         public int SubscriptionVersionId { get; set; }
         public int SubscriptionId { get; set; }
+        public int? OrganisationId { get; set; }
         public virtual SubscriptionVersion SubscriptionVersion { get;  set;}
         public virtual Subscription Subscription { get; set; }
         public bool IsPaid { get; set; }

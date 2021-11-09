@@ -10,9 +10,9 @@ namespace AnthillCommon.Models
     {
         public int Id { get; set; }
         public string Name {get; set;}
-        public SubscriptionType SubscriptionType { get; set; }
+        public AccessLevel AccessLevel { get; set; }
         public double Cost { get; set; }
-
+        public int MaxUsers { get; set; }
 
     }
 }

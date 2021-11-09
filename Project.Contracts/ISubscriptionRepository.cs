@@ -10,7 +10,7 @@ namespace AnthillCommon.Contracts
 {
     public interface ISubscriptionRepository :  IEntityRepository<Subscription>
     {
-        Task<Subscription> GetByType(SubscriptionType type);
+        Task<Subscription> GetByAccessLevel(AccessLevel accessLevel);
         Task CheckSubscription(Account account);
     }
 }
