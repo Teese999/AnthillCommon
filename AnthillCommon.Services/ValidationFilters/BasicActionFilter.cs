@@ -17,34 +17,30 @@ namespace AnthillCommon.Services.ValidationFilters
         private readonly CommonContext _context = new CommonContext();
         private AccountRepository _accountRepo;
         private SubscriptionVersionRepository _subscriptionVersionRepo;
-        private readonly SubscriptionType _controllerSequrity;
+        private readonly SubscriptionType _controllerType;
         public BasicActionFilter(SubscriptionType type)
         {
-            _controllerSequrity = type;
+            _controllerType = type;
 
         }
 
-
-
-
-        async void IResultFilter.OnResultExecuting(ResultExecutingContext context)
+        void IResultFilter.OnResultExecuting(ResultExecutingContext context)
         {
             _accountRepo = new AccountRepository(_context);
             _subscriptionVersionRepo = new SubscriptionVersionRepository(_context);
 
             var id = int.Parse(context.HttpContext.User.FindFirst("id")?.Value);
-            var account =  _accountRepo.Get(id).Result; //BUG??
-            var accountSubscription = _subscriptionVersionRepo.GetByKey(account.SubscriptionVersionId).Result; //BUG;
+            var account = _accountRepo.Get(id).Result;
 
 
-            var userSequrity = account.SubscriptionType;
+            var userType = account.Subscription.SubscriptionType;
 
-            if ((int)userSequrity < (int)_controllerSequrity)
+            if ((int)userType < (int)_controllerType)
             {
                 context.Result = new BadRequestObjectResult("You do not allowed for it");
                 return;
             }
-            if (accountSubscription.Name == "Trial" && !account.IsPaid)
+            if (account.SubscriptionVersion.Name == "Trial" && !account.IsPaid)
             {
 
                 context.Result = new BadRequestObjectResult("Your trial version has been expired");
@@ -59,7 +55,7 @@ namespace AnthillCommon.Services.ValidationFilters
 
         public void OnResultExecuted(ResultExecutedContext context)
         {
-            
+
         }
     }
 

@@ -14,7 +14,7 @@ namespace AnthillCommon.Models
         public DateTime UpdateTime { get; set; }
         public int CityId { get; set; }
         public int OrganizationId { get; set; }
-        public Organization Organization { get; set; }
-        public City City { get; set; }
+        public virtual Organization Organization { get; set; }
+        public virtual City City { get; set; }
     }
 }

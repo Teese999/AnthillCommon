@@ -46,7 +46,6 @@ namespace AnthillCommon.Services.Services
         }
         public async Task<AccessTokenResult> Signin(string login, string password)
         {
-
             var account = await _accountRepo.GetByLogin(login);
 
             if (account == null || !_passwordHasher.Check(account.Password, password).Verified)
@@ -65,10 +64,24 @@ namespace AnthillCommon.Services.Services
 
                 return new AccessTokenResult { error_message = "User already exists" };
             }
-            var subscription = await _subscriptionRepo.GetBySequrity(SubscriptionType.Basic);
-            var account = new Account(login, nickName, _passwordHasher.Hash(password), role, DateTime.UtcNow, subscription.Id, SubscriptionType.Basic);
-
+            var subscription = await _subscriptionRepo.GetByType(SubscriptionType.Basic);
+            var subscriptionVersion = await _subscriptionVersionRepo.GetByName("Trial");
+            var account = new Account()
+            {
+                Login = login,
+                NickName = nickName,
+                Password = _passwordHasher.Hash(password),
+                Role = role,
+                CreateDate = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow,
+                SubscriptionStartDate = DateTime.UtcNow,
+                SubscriptionId = subscription.Id,
+                SubscriptionVersionId = subscriptionVersion.Id,
+            };
             await _accountRepo.Add(account);
+            account.Subscription = subscription;
+            account.SubscriptionVersion = subscriptionVersion;
+            
 
             return await GenerateJwtToken(account);
         }
@@ -92,7 +105,6 @@ namespace AnthillCommon.Services.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
-            var subscriprion = await _subscriptionRepo.GetByKey((int)account.SubscriptionType);
 
             var refreshToken = new RefreshToken()
             {
@@ -102,7 +114,9 @@ namespace AnthillCommon.Services.Services
                 ExpiryDate = DateTime.UtcNow.AddHours(_settings.REFRESHTOKEN_LIFITIME)
 
             };
+
             await _refreshTokenRepo.Add(refreshToken);
+
             var result = new AccessTokenResult
             {
                 access_token = accessToken,
@@ -110,7 +124,7 @@ namespace AnthillCommon.Services.Services
                 expires_in = _settings.LIFETIME,
                 role = account.Role.ToString(),
                 refresh_token = refreshToken.Token,
-                subscription_plan = subscriprion.Name.ToString(),
+                subscription_plan = account.Subscription.Name,
                 subscription_version_id = account.SubscriptionVersionId.ToString(),
                 IsPaid = account.IsPaid.ToString(),
                 time_ramain = await _subscriptionVersionRepo.TimeRemaining(account.Id),
@@ -170,8 +184,6 @@ namespace AnthillCommon.Services.Services
 
             var account = await  _accountRepo.GetByKey(storedToken.AccountId);
             return await GenerateJwtToken(account);
-
-
         }
 
     }

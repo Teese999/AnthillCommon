@@ -22,6 +22,7 @@ namespace AnthillCommon.DataContext
         public string ConnectionString { get; private set; }
         public CommonContext() : base()
         {
+            
         }
         public CommonContext(DbContextOptions options) : base(options)
         {
@@ -125,12 +126,14 @@ namespace AnthillCommon.DataContext
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
             var configuration = builder.Build();
+
 
             if (!optionsBuilder.IsConfigured)
             {
                 ConnectionString = configuration.GetConnectionString("DefaultConnection");
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 
             }
         }

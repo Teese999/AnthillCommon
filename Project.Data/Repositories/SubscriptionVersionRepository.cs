@@ -24,5 +24,11 @@ namespace AnthillCommon.Repositories
 
             return (account.SubscriptionStartDate.AddDays(subscriptionVersion.Duration) - DateTime.Now).ToString();
         }
+        public async Task<SubscriptionVersion> GetByName(string name)
+        {
+            var _subsVersionRepo = new SubscriptionVersionRepository(Context);
+
+            return await _subsVersionRepo.GetSingle(x => x.Name == name);
+        }
     }
 }

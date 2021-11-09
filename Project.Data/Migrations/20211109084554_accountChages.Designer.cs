@@ -4,14 +4,16 @@ using AnthillCommon.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(CommonContext))]
-    partial class CommonContextModelSnapshot : ModelSnapshot
+    [Migration("20211109084554_accountChages")]
+    partial class accountChages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

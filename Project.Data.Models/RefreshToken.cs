@@ -15,6 +15,6 @@ namespace AnthillCommon.Models
         public DateTime ExpiryDate { get; set; }
 
         [ForeignKey(nameof(AccountId))]
-        public Account Account { get; set; }
+        public virtual Account Account { get; set; }
     }
 }

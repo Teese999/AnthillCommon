@@ -19,7 +19,7 @@ namespace AnthillCommon.Repositories
         {
         }
 
-        public async Task<Subscription> GetBySequrity(SubscriptionType type)
+        public async Task<Subscription> GetByType(SubscriptionType type)
         {
             var subscription = await Context.Set<Subscription>().FirstOrDefaultAsync(x => x.SubscriptionType == type);
             return subscription;

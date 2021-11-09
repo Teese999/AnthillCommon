@@ -9,5 +9,6 @@ namespace AnthillCommon.Contracts
     public interface ISubscriptionVersionRepository: IEntityRepository<SubscriptionVersion>
     {
         Task<string> TimeRemaining(int accountId);
+        Task<SubscriptionVersion> GetByName(string name);
     }
 }

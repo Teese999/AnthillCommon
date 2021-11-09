@@ -21,7 +21,7 @@ namespace AnthillCommon.Services.Services
         {
             _container = container;
         }
-        //public async Task<AccountDto> ChangeSubscriptionPlan(int accountId, int subscriptionSequrityId)
+        //public async Task<AccountDto> ChangeSubscriptionPlan(int accountId, int subscriptionTypeId)
         //{
         //    var _repo = _container.Resolve<IAccountRepository>();
         //    var account = await _repo.GetByKey(accountId);
@@ -29,9 +29,9 @@ namespace AnthillCommon.Services.Services
 
         //    if (account == null) { return null; }
 
-        //    if (Enum.IsDefined(typeof(SubscriptionSequrity), subscriptionSequrityId))
+        //    if (Enum.IsDefined(typeof(SubscriptionType), subscriptionTypeId))
         //    {
-        //        accountUpdated.SubscriptionPlanId = subscriptionSequrityId;
+        //        accountUpdated.SubscriptionPlanId = subscriptionTypeId;
         //    }
 
         //    accountUpdated.SubscriptionStartDate = DateTime.UtcNow;
@@ -78,7 +78,7 @@ namespace AnthillCommon.Services.Services
             {
                 if (Enum.IsDefined(typeof(SubscriptionType), newId))
                 {
-                    accountUpdated.SubscriptionType = (SubscriptionType)newId;
+                    accountUpdated.SubscriptionId = newId;
                 }
 
             });
