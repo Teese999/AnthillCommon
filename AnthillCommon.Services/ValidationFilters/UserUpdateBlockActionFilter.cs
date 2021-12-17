@@ -15,7 +15,6 @@ namespace AnthillCommon.Services.ValidationFilters
         {
 
         }
-
         void IResultFilter.OnResultExecuting(ResultExecutingContext context)
         {
             _accountRepo = new AccountRepository(_context);

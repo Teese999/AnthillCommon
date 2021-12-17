@@ -1,0 +1,27 @@
+﻿<Window x:Class="AnthillCommon.WPF.Views.AnthillWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:AnthillCommon.WPF.ViewModels"
+        xmlns:local="clr-namespace:AnthillCommon.WPF.Views"
+        mc:Ignorable="d"
+        Title="AnthillWindow" Height="650" Width="1216" ResizeMode="NoResize">
+    <Window.DataContext>
+        <vm:AnthillWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,84,0,0" Text="{Binding Rolename, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Account Info" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" TextAlignment="Center"/>
+        <Button Content="Sign In" HorizontalAlignment="Left" Margin="10,358,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" Command="{Binding SignIn}"/>
+        <Button Content="Sign Up" HorizontalAlignment="Left" Margin="10,426,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" Command="{Binding SignUp}"/>
+        <DataGrid Margin="215,10,215,135" ItemsSource="{Binding UserList}" AutoGenerateColumns="True" CanUserAddRows="False" IsReadOnly="True"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="990,10,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="990,84,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="990,162,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="990,162,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30"/>
+        <Button Content="NextPage" HorizontalAlignment="Left" Margin="801,520,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" Command="{Binding NextPage}"/>
+        <Button Content="PreviousPage" HorizontalAlignment="Left" Margin="215,520,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" Command="{Binding PrevPage}"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,520,0,0" TextWrapping="Wrap" Text="{Binding PageNumber}" VerticalAlignment="Top" Width="100" Height="50" FontSize="30" TextAlignment="Center"/>
+    </Grid>
+</Window>

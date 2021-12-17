@@ -16,9 +16,7 @@ namespace AnthillComon.Common.Enums
 
     public enum Role
     {
-
         Administrator = 1,
-
         Regular = 2,
     }
 }

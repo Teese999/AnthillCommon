@@ -13,8 +13,9 @@ namespace AnthillCommon.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    [AccessValidationActionFilter(AccessLevel.Basic)]
+    [AllowAnonymous]
+    //[Authorize]
+    //[AccessValidationActionFilter(AccessLevel.Basic)]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -47,6 +48,15 @@ namespace AnthillCommon.Controllers
             var pagginationModel = await _userService.GetPage(_mapper.Map<PaginationSettingsDto>(pagginationSettings));
             return Ok(_mapper.Map<PaginationModel>(pagginationModel));
         }
+        [HttpGet]
+        [Route("getlist")]
+        public async Task<IActionResult> GetList(int countPerPage, int pageNumber)
+        {
+            var pagginationSettings = new PaginationSettingsModel() { CountPerPage = countPerPage, PageNumber = pageNumber, SelectedCity = null, SelectedOffice = null };
+
+            var pagginationModel = await _userService.GetPage(_mapper.Map<PaginationSettingsDto>(pagginationSettings));
+            return Ok(_mapper.Map<PaginationModel>(pagginationModel));
+        }
         [HttpPost]
         [Authorize(Roles = RoleNames.Administrator + "," + RoleNames.Regular)]
         [ServiceFilter(typeof(UsersLimitActionFilter))]
@@ -58,12 +68,12 @@ namespace AnthillCommon.Controllers
             }
 
             var accountId = int.Parse(HttpContext.User.FindFirst("id")?.Value);
-            
+
             return await _userService.Add(_mapper.Map<UserDto>(user), accountId);
         }
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles =  RoleNames.Administrator)]
+        [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -76,7 +86,7 @@ namespace AnthillCommon.Controllers
         }
         [HttpPut]
         [Authorize(Roles = RoleNames.Administrator)]
-        [ServiceFilter(typeof(UserUpdateBlockActionFilter))]    
+        [ServiceFilter(typeof(UserUpdateBlockActionFilter))]
         public async Task<IActionResult> Uppdate([FromBody] UserModel user)
         {
             if (user == null)

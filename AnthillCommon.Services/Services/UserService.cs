@@ -69,6 +69,13 @@ namespace AnthillCommon.Services.Services
             var result = AutoMapper.Map<UserDto>(data);
             return result;
         }
+        public async Task<IEnumerable<UserDto>> GetAll()
+        {
+            var _repo = _container.Resolve<IUserRepository>();
+            var data = await _repo.GetAll();
+            var result = AutoMapper.Map<IEnumerable<UserDto>>(data);
+            return result;
+        }
         public async Task<PaginationModelDto> GetPage(PaginationSettingsDto settingsDto)
         {
             if (settingsDto.CountPerPage == 0) { settingsDto.CountPerPage = 10; }
@@ -97,7 +104,7 @@ namespace AnthillCommon.Services.Services
             }
             if (settingsDto.SelectedOffice!= null)
             {
-                criteria = (x => x.OfficeId == settingsDto.SelectedOffice);
+                criteria = x => x.OfficeId == settingsDto.SelectedOffice;
             }
 
             data = (await _repoUser.GetRange(firstUserIndex, settingsDto.CountPerPage, criteria)).ToList();

@@ -84,6 +84,7 @@ namespace AnthillCommon.Repositories
         {
             return await GetQuery(criteria).ToListAsync();
         }
+
         public async Task<IEnumerable<TEntity>> GetRange(int firstIndex, int countPerPage, Expression<Func<TEntity, bool>> criteria = null)
         {
             if (criteria == null)

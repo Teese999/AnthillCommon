@@ -16,7 +16,7 @@ namespace AnthillCommon.Services.Contracts.Services
         Task Update(UserDto user);
         Task Delete(int id);
         Task<PaginationModelDto> GetPage(PaginationSettingsDto paginationSettings);
-
+        Task<IEnumerable<UserDto>> GetAll();
 
     }
 }

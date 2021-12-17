@@ -87,6 +87,8 @@ namespace AnthillCommon
 
             services.AddAuthorization();
 
+            services.AddControllers().AddNewtonsoftJson();
+
             services.AddAutoMapper(new Type[] { 
                 typeof(CityMapperProfile),
                 typeof(UserMapperProfile),

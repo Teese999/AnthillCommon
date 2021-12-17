@@ -1,0 +1,12 @@
+﻿<Application x:Class="AnthillCommon.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AnthillCommon.WPF"
+             xmlns:H="clr-namespace:AnthillCommon.WPF.Helpers"
+             StartupUri="Views/AnthillWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <H:SignUpConvereter x:Key="SignUpConvereter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

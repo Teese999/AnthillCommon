@@ -55,8 +55,7 @@ namespace AnthillCommon.Services.Services
                 return new AccessTokenResult { error_message = "Invalid grant" };
             }
 
-            var jwtToken = GenerateJwtToken(account);
-            return await jwtToken;
+            return await GenerateJwtToken(account);
         }
 
         public async Task<AccessTokenResult> Signup(string login, string nickName, string password, Role role, int? OrganisationId = null)
